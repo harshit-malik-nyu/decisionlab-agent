@@ -34,7 +34,7 @@ with (output/'runtime.log').open('w') as logs:
         meta={'runtime':version,'models':request('/api/tags'),'platform':platform.platform(),
               'processor':platform.processor(),'cpu_count':os.cpu_count(),
               'source_commit':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
-              'scope':'Six authored development cases; one run each; no held-out or superiority claim.'}
+              'scope':'Six authored development cases; one run each; no held-out or superiority claim. Invalid-data holds are runtime policy actions, not model reasoning.'}
         (output/'environment.json').write_text(json.dumps(meta,indent=2)+'\n')
         result=evaluate(LocalModel(model),output/'model-smoke.json')
         summary={'model':model,'correct':result['correct'],'total':len(result['results']),

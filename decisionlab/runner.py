@@ -27,6 +27,7 @@ class LocalModel:
 
 def run_model(case, model, max_steps=12, seed=17):
     investigation = Investigation(case, seed, max_steps)
+    safety_actions = []
     call_start = len(getattr(model,'inference_records',[]))
     messages = [{'role':'system','content':SYSTEM}, {'role':'user','content':QUESTION}]
     try:
@@ -41,13 +42,18 @@ def run_model(case, model, max_steps=12, seed=17):
                 content = 'Invalid model action'
                 result = investigation.step('__invalid__', {'reason':str(error)})
             messages += [{'role':'assistant','content':content}, {'role':'user','content':json.dumps({'tool_observation':result})}]
+            if (result.get('tool') in ('quality','compare') and result.get('result',{}).get('valid') is False):
+                closed = investigation.step('finish', {'decision':'hold','evidence_ids':[result['id']]})
+                safety_actions.append({'policy':'invalid_data_fail_fast','trigger':result['id'],'action':closed.get('id')})
             if investigation.done:
                 break
         if not investigation.done:
             investigation.done = True
             investigation.decision = {'decision':'hold','reason':'step_budget_exhausted'}
         output = investigation.export()
-        output['controller'] = 'local_model'
+        output['controller'] = 'guarded_local_model'
+        output['safety_actions'] = safety_actions
+        output['decision_origin'] = 'runtime_data_quality_gate' if safety_actions else 'model_or_budget_limit'
         output['model'] = getattr(model,'model','test_double')
         if hasattr(model,'inference_records'):
             output['inference_calls'] = model.inference_records[call_start:]
