@@ -22,7 +22,7 @@ def request(path,payload=None,timeout=120):
 
 runtime=Path(sys.argv[1]).resolve()
 env={**os.environ,'OLLAMA_HOST':'127.0.0.1:11434','OLLAMA_MODELS':str(runtime/'models'),'OLLAMA_NUM_PARALLEL':'1','OLLAMA_CONTEXT_LENGTH':'4096'}
-model='qwen2.5:1.5b'
+model=os.environ.get('DECISIONLAB_MODEL','qwen2.5:3b')
 with (output/'runtime.log').open('w') as logs:
     server=subprocess.Popen([str(runtime/'bin/ollama'),'serve'],env=env,stdout=logs,stderr=logs)
     try:

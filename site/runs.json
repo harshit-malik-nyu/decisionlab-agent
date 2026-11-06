@@ -1,5 +1,5 @@
 {
-  "notice": "Synthetic authored regression cases. Both measured controllers are deterministic rules, not LLMs. Live local-model performance has not been measured.",
+  "notice": "Synthetic authored cases. Rule policies and measured inference are distinct controllers. No held-out generalization claim.",
   "runs": [
     {
       "case": "clean",
@@ -1472,10 +1472,1773 @@
         "steps": 4,
         "tool_errors": 0
       }
+    },
+    {
+      "case": "clean",
+      "schema_version": 2,
+      "seed": 17,
+      "max_steps": 12,
+      "data_sha256": "05cbfe197d739de9df69cba4cf03927ef1e90e936aa865bb378eca681bd4fa14",
+      "trace": [
+        {
+          "tool": "scenario",
+          "args": {
+            "segment": "small",
+            "lift": 0.05,
+            "cost": 2000
+          },
+          "error": "Valid comparison required"
+        },
+        {
+          "id": "e2",
+          "tool": "compare",
+          "args": {},
+          "result": {
+            "valid": true,
+            "segments": {
+              "large": {
+                "after": {
+                  "n": 40,
+                  "retention": 0.9,
+                  "support_per_account": 40.0,
+                  "monthly_value": 1000.0
+                },
+                "before": {
+                  "n": 40,
+                  "retention": 0.9,
+                  "support_per_account": 30.0,
+                  "monthly_value": 1000.0
+                },
+                "change_pp": 0.0
+              },
+              "small": {
+                "after": {
+                  "n": 80,
+                  "retention": 0.75,
+                  "support_per_account": 90.0,
+                  "monthly_value": 200.0
+                },
+                "before": {
+                  "n": 80,
+                  "retention": 0.9,
+                  "support_per_account": 30.0,
+                  "monthly_value": 200.0
+                },
+                "change_pp": -15.0
+              }
+            },
+            "priority": "small",
+            "causal": false
+          },
+          "data_sha256": "05cbfe197d739de9df69cba4cf03927ef1e90e936aa865bb378eca681bd4fa14",
+          "sha256": "bb8c1f3fdc919c868896133d1a48d069b4e224fab97742cb465348e30948f3b9"
+        },
+        {
+          "id": "e3",
+          "tool": "scenario",
+          "args": {
+            "segment": "small",
+            "lift": 0.05,
+            "cost": 2000
+          },
+          "result": {
+            "segment": "small",
+            "lift_assumption": 0.05,
+            "cost_assumption": 2000,
+            "margin_assumption": 0.75,
+            "horizon_months_assumption": 6,
+            "incremental_contribution_scenario": 3600.0,
+            "net_scenario": 1600.0,
+            "break_even_lift": 0.027777777777777776,
+            "depends_on": "e2",
+            "causal_effect_established": false,
+            "meaning": "Conditional scenario; pilot only, not rollout approval."
+          },
+          "data_sha256": "05cbfe197d739de9df69cba4cf03927ef1e90e936aa865bb378eca681bd4fa14",
+          "sha256": "a6bd7c03771d3173b869f79cfc3a7c1bdeebabb8b349e4c2b8169dbf7f56d80e"
+        },
+        {
+          "id": "e4",
+          "tool": "finish",
+          "args": {
+            "decision": "hold",
+            "evidence_ids": [
+              "e2",
+              "e3"
+            ]
+          },
+          "result": {
+            "decision": "hold",
+            "evidence_ids": [
+              "e2",
+              "e3"
+            ],
+            "scope": "Human-reviewed experiment proposal only",
+            "causal_claim": false
+          },
+          "data_sha256": "05cbfe197d739de9df69cba4cf03927ef1e90e936aa865bb378eca681bd4fa14",
+          "sha256": "d6175340f2b49fb7b71592dab27400d9d1870ceaf9a28354da5d28ef0d202667"
+        }
+      ],
+      "decision": {
+        "decision": "hold",
+        "evidence_ids": [
+          "e2",
+          "e3"
+        ],
+        "scope": "Human-reviewed experiment proposal only",
+        "causal_claim": false
+      },
+      "steps": 4,
+      "complete": true,
+      "controller": "local_model",
+      "model": "qwen2.5:1.5b",
+      "inference_calls": [
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 9064244811,
+          "prompt_eval_count": 397,
+          "eval_count": 34
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 1622847288,
+          "prompt_eval_count": 486,
+          "eval_count": 12
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 7525594957,
+          "prompt_eval_count": 869,
+          "eval_count": 34
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 6789181667,
+          "prompt_eval_count": 1220,
+          "eval_count": 30
+        }
+      ],
+      "grade": {
+        "correct": false,
+        "steps": 4,
+        "tool_errors": 1
+      }
+    },
+    {
+      "case": "duplicates",
+      "schema_version": 2,
+      "seed": 17,
+      "max_steps": 12,
+      "data_sha256": "8bb6a7dd1c6162f105817a19a7b2d9b80df1682c44fccec073d5566193785084",
+      "trace": [
+        {
+          "tool": "scenario",
+          "args": {
+            "segment": "small",
+            "lift": 0.05,
+            "cost": 2000
+          },
+          "error": "Valid comparison required"
+        },
+        {
+          "id": "e2",
+          "tool": "compare",
+          "args": {},
+          "result": {
+            "valid": false,
+            "quality": {
+              "valid": false,
+              "duplicate_keys": 12,
+              "missing_outcomes": 0,
+              "invalid_rows": 0,
+              "incomplete_accounts": 0,
+              "segment_changes": 0,
+              "empty_or_missing_segment": false
+            },
+            "recommendation": "hold"
+          },
+          "data_sha256": "8bb6a7dd1c6162f105817a19a7b2d9b80df1682c44fccec073d5566193785084",
+          "sha256": "673043a056007585948cc033563cde4e00ed91127a609a04a089a32ffe5a1eaa"
+        },
+        {
+          "tool": "scenario",
+          "args": {
+            "segment": "small",
+            "lift": 0.05,
+            "cost": 2000
+          },
+          "error": "Valid comparison required"
+        },
+        {
+          "id": "e4",
+          "tool": "compare",
+          "args": {},
+          "result": {
+            "valid": false,
+            "quality": {
+              "valid": false,
+              "duplicate_keys": 12,
+              "missing_outcomes": 0,
+              "invalid_rows": 0,
+              "incomplete_accounts": 0,
+              "segment_changes": 0,
+              "empty_or_missing_segment": false
+            },
+            "recommendation": "hold"
+          },
+          "data_sha256": "8bb6a7dd1c6162f105817a19a7b2d9b80df1682c44fccec073d5566193785084",
+          "sha256": "ff512bdd1ec604d12cbfea85e987aa251a8caad45e75cf4b588fc0506ee15256"
+        },
+        {
+          "tool": "scenario",
+          "args": {
+            "segment": "small",
+            "lift": 0.05,
+            "cost": 2000
+          },
+          "error": "Valid comparison required"
+        },
+        {
+          "id": "e6",
+          "tool": "compare",
+          "args": {},
+          "result": {
+            "valid": false,
+            "quality": {
+              "valid": false,
+              "duplicate_keys": 12,
+              "missing_outcomes": 0,
+              "invalid_rows": 0,
+              "incomplete_accounts": 0,
+              "segment_changes": 0,
+              "empty_or_missing_segment": false
+            },
+            "recommendation": "hold"
+          },
+          "data_sha256": "8bb6a7dd1c6162f105817a19a7b2d9b80df1682c44fccec073d5566193785084",
+          "sha256": "61ec45128dd98e89db7fdb958daeb826db1a400bd1bd33865948b43ba553b04d"
+        },
+        {
+          "tool": "scenario",
+          "args": {
+            "segment": "small",
+            "lift": 0.05,
+            "cost": 2000
+          },
+          "error": "Valid comparison required"
+        },
+        {
+          "id": "e8",
+          "tool": "compare",
+          "args": {},
+          "result": {
+            "valid": false,
+            "quality": {
+              "valid": false,
+              "duplicate_keys": 12,
+              "missing_outcomes": 0,
+              "invalid_rows": 0,
+              "incomplete_accounts": 0,
+              "segment_changes": 0,
+              "empty_or_missing_segment": false
+            },
+            "recommendation": "hold"
+          },
+          "data_sha256": "8bb6a7dd1c6162f105817a19a7b2d9b80df1682c44fccec073d5566193785084",
+          "sha256": "bc2641cfc7b6fce2c904e8aba3984c5af388858e13b137959be86dbd95bd6679"
+        },
+        {
+          "tool": "scenario",
+          "args": {
+            "segment": "small",
+            "lift": 0.05,
+            "cost": 2000
+          },
+          "error": "Valid comparison required"
+        },
+        {
+          "id": "e10",
+          "tool": "compare",
+          "args": {},
+          "result": {
+            "valid": false,
+            "quality": {
+              "valid": false,
+              "duplicate_keys": 12,
+              "missing_outcomes": 0,
+              "invalid_rows": 0,
+              "incomplete_accounts": 0,
+              "segment_changes": 0,
+              "empty_or_missing_segment": false
+            },
+            "recommendation": "hold"
+          },
+          "data_sha256": "8bb6a7dd1c6162f105817a19a7b2d9b80df1682c44fccec073d5566193785084",
+          "sha256": "28b2ade7ab15aeb8f3a280dc9975de7bb1eb013378121da023363808f87c1c07"
+        },
+        {
+          "tool": "scenario",
+          "args": {
+            "segment": "small",
+            "lift": 0.05,
+            "cost": 2000
+          },
+          "error": "Valid comparison required"
+        },
+        {
+          "id": "e12",
+          "tool": "compare",
+          "args": {},
+          "result": {
+            "valid": false,
+            "quality": {
+              "valid": false,
+              "duplicate_keys": 12,
+              "missing_outcomes": 0,
+              "invalid_rows": 0,
+              "incomplete_accounts": 0,
+              "segment_changes": 0,
+              "empty_or_missing_segment": false
+            },
+            "recommendation": "hold"
+          },
+          "data_sha256": "8bb6a7dd1c6162f105817a19a7b2d9b80df1682c44fccec073d5566193785084",
+          "sha256": "571363eeb37692d94b897e0c08039c3cf3b36649733381c1a1bf2034d70d977b"
+        }
+      ],
+      "decision": {
+        "decision": "hold",
+        "reason": "step_budget_exhausted"
+      },
+      "steps": 12,
+      "complete": true,
+      "controller": "local_model",
+      "model": "qwen2.5:1.5b",
+      "inference_calls": [
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 1737832137,
+          "prompt_eval_count": 397,
+          "eval_count": 34
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 1643653620,
+          "prompt_eval_count": 486,
+          "eval_count": 12
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 5485527446,
+          "prompt_eval_count": 731,
+          "eval_count": 34
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 1791687212,
+          "prompt_eval_count": 820,
+          "eval_count": 12
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 5749846048,
+          "prompt_eval_count": 1058,
+          "eval_count": 34
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 1906306701,
+          "prompt_eval_count": 1147,
+          "eval_count": 12
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 5873897689,
+          "prompt_eval_count": 1387,
+          "eval_count": 34
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 2042716229,
+          "prompt_eval_count": 1476,
+          "eval_count": 12
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 6022246554,
+          "prompt_eval_count": 1717,
+          "eval_count": 34
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 2554822060,
+          "prompt_eval_count": 1806,
+          "eval_count": 12
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 6322965206,
+          "prompt_eval_count": 2049,
+          "eval_count": 34
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 2310954732,
+          "prompt_eval_count": 2138,
+          "eval_count": 12
+        }
+      ],
+      "grade": {
+        "correct": false,
+        "steps": 12,
+        "tool_errors": 6
+      }
+    },
+    {
+      "case": "missing",
+      "schema_version": 2,
+      "seed": 17,
+      "max_steps": 12,
+      "data_sha256": "78a256ad37d774b234dd40f097711f76aa45a0522d51f0a3dde4a91d37593e84",
+      "trace": [
+        {
+          "tool": "scenario",
+          "args": {
+            "segment": "small",
+            "lift": 0.05,
+            "cost": 2000
+          },
+          "error": "Valid comparison required"
+        },
+        {
+          "id": "e2",
+          "tool": "compare",
+          "args": {},
+          "result": {
+            "valid": false,
+            "quality": {
+              "valid": false,
+              "duplicate_keys": 0,
+              "missing_outcomes": 27,
+              "invalid_rows": 0,
+              "incomplete_accounts": 0,
+              "segment_changes": 0,
+              "empty_or_missing_segment": false
+            },
+            "recommendation": "hold"
+          },
+          "data_sha256": "78a256ad37d774b234dd40f097711f76aa45a0522d51f0a3dde4a91d37593e84",
+          "sha256": "58b09ea3275b0dc14e5603d36682c83e4fd7e719e8fb34da8290a2574c6a9fd5"
+        },
+        {
+          "tool": "scenario",
+          "args": {
+            "segment": "small",
+            "lift": 0.05,
+            "cost": 2000
+          },
+          "error": "Valid comparison required"
+        },
+        {
+          "id": "e4",
+          "tool": "compare",
+          "args": {},
+          "result": {
+            "valid": false,
+            "quality": {
+              "valid": false,
+              "duplicate_keys": 0,
+              "missing_outcomes": 27,
+              "invalid_rows": 0,
+              "incomplete_accounts": 0,
+              "segment_changes": 0,
+              "empty_or_missing_segment": false
+            },
+            "recommendation": "hold"
+          },
+          "data_sha256": "78a256ad37d774b234dd40f097711f76aa45a0522d51f0a3dde4a91d37593e84",
+          "sha256": "15843e0524f76282a1b179d258583dcef5e0fdddc00ae593bf7401084b802442"
+        },
+        {
+          "tool": "scenario",
+          "args": {
+            "segment": "small",
+            "lift": 0.05,
+            "cost": 2000
+          },
+          "error": "Valid comparison required"
+        },
+        {
+          "id": "e6",
+          "tool": "compare",
+          "args": {},
+          "result": {
+            "valid": false,
+            "quality": {
+              "valid": false,
+              "duplicate_keys": 0,
+              "missing_outcomes": 27,
+              "invalid_rows": 0,
+              "incomplete_accounts": 0,
+              "segment_changes": 0,
+              "empty_or_missing_segment": false
+            },
+            "recommendation": "hold"
+          },
+          "data_sha256": "78a256ad37d774b234dd40f097711f76aa45a0522d51f0a3dde4a91d37593e84",
+          "sha256": "f321d245a93a7965a2f33bfa28288a3a97fc17bb52ba840b5e27aab74acfa473"
+        },
+        {
+          "tool": "scenario",
+          "args": {
+            "segment": "small",
+            "lift": 0.05,
+            "cost": 2000
+          },
+          "error": "Valid comparison required"
+        },
+        {
+          "id": "e8",
+          "tool": "compare",
+          "args": {},
+          "result": {
+            "valid": false,
+            "quality": {
+              "valid": false,
+              "duplicate_keys": 0,
+              "missing_outcomes": 27,
+              "invalid_rows": 0,
+              "incomplete_accounts": 0,
+              "segment_changes": 0,
+              "empty_or_missing_segment": false
+            },
+            "recommendation": "hold"
+          },
+          "data_sha256": "78a256ad37d774b234dd40f097711f76aa45a0522d51f0a3dde4a91d37593e84",
+          "sha256": "67d1919315432254926adaf7922a0dd49681229665a9d247c6b6aec6a74ef155"
+        },
+        {
+          "tool": "scenario",
+          "args": {
+            "segment": "small",
+            "lift": 0.05,
+            "cost": 2000
+          },
+          "error": "Valid comparison required"
+        },
+        {
+          "id": "e10",
+          "tool": "compare",
+          "args": {},
+          "result": {
+            "valid": false,
+            "quality": {
+              "valid": false,
+              "duplicate_keys": 0,
+              "missing_outcomes": 27,
+              "invalid_rows": 0,
+              "incomplete_accounts": 0,
+              "segment_changes": 0,
+              "empty_or_missing_segment": false
+            },
+            "recommendation": "hold"
+          },
+          "data_sha256": "78a256ad37d774b234dd40f097711f76aa45a0522d51f0a3dde4a91d37593e84",
+          "sha256": "bbc5e6447701666a29695d8bba9e58d2fd4f5572b8f96aa6f47440522d8fb4ad"
+        },
+        {
+          "tool": "scenario",
+          "args": {
+            "segment": "small",
+            "lift": 0.05,
+            "cost": 2000
+          },
+          "error": "Valid comparison required"
+        },
+        {
+          "id": "e12",
+          "tool": "compare",
+          "args": {},
+          "result": {
+            "valid": false,
+            "quality": {
+              "valid": false,
+              "duplicate_keys": 0,
+              "missing_outcomes": 27,
+              "invalid_rows": 0,
+              "incomplete_accounts": 0,
+              "segment_changes": 0,
+              "empty_or_missing_segment": false
+            },
+            "recommendation": "hold"
+          },
+          "data_sha256": "78a256ad37d774b234dd40f097711f76aa45a0522d51f0a3dde4a91d37593e84",
+          "sha256": "9112f9f998e2fe83a7c2ada1d8c7e019c2d8d9607eead84bb1aa6b3fe4fd952e"
+        }
+      ],
+      "decision": {
+        "decision": "hold",
+        "reason": "step_budget_exhausted"
+      },
+      "steps": 12,
+      "complete": true,
+      "controller": "local_model",
+      "model": "qwen2.5:1.5b",
+      "inference_calls": [
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 1700838299,
+          "prompt_eval_count": 397,
+          "eval_count": 34
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 1581896924,
+          "prompt_eval_count": 486,
+          "eval_count": 12
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 5407497082,
+          "prompt_eval_count": 732,
+          "eval_count": 34
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 1740272151,
+          "prompt_eval_count": 821,
+          "eval_count": 12
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 5722319109,
+          "prompt_eval_count": 1067,
+          "eval_count": 34
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 1886160877,
+          "prompt_eval_count": 1156,
+          "eval_count": 12
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 5892255799,
+          "prompt_eval_count": 1400,
+          "eval_count": 34
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 2021565274,
+          "prompt_eval_count": 1489,
+          "eval_count": 12
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 6183133541,
+          "prompt_eval_count": 1735,
+          "eval_count": 34
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 2176147259,
+          "prompt_eval_count": 1824,
+          "eval_count": 12
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 6445114413,
+          "prompt_eval_count": 2070,
+          "eval_count": 34
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 2311357272,
+          "prompt_eval_count": 2159,
+          "eval_count": 12
+        }
+      ],
+      "grade": {
+        "correct": false,
+        "steps": 12,
+        "tool_errors": 6
+      }
+    },
+    {
+      "case": "reversal",
+      "schema_version": 2,
+      "seed": 17,
+      "max_steps": 12,
+      "data_sha256": "c88812d27f0e8b8bbad479f4d2a93d79ca0c737fab2c9e728f0b325861e79ac8",
+      "trace": [
+        {
+          "tool": "scenario",
+          "args": {
+            "segment": "small",
+            "lift": 0.05,
+            "cost": 2000
+          },
+          "error": "Valid comparison required"
+        },
+        {
+          "id": "e2",
+          "tool": "compare",
+          "args": {},
+          "result": {
+            "valid": true,
+            "segments": {
+              "large": {
+                "after": {
+                  "n": 40,
+                  "retention": 0.5,
+                  "support_per_account": 40.0,
+                  "monthly_value": 1000.0
+                },
+                "before": {
+                  "n": 40,
+                  "retention": 0.9,
+                  "support_per_account": 30.0,
+                  "monthly_value": 1000.0
+                },
+                "change_pp": -40.0
+              },
+              "small": {
+                "after": {
+                  "n": 80,
+                  "retention": 0.9,
+                  "support_per_account": 90.0,
+                  "monthly_value": 200.0
+                },
+                "before": {
+                  "n": 80,
+                  "retention": 0.9,
+                  "support_per_account": 30.0,
+                  "monthly_value": 200.0
+                },
+                "change_pp": 0.0
+              }
+            },
+            "priority": "large",
+            "causal": false
+          },
+          "data_sha256": "c88812d27f0e8b8bbad479f4d2a93d79ca0c737fab2c9e728f0b325861e79ac8",
+          "sha256": "658d40dcfc75004cc94e2d753553d78c8a550606211ee503c44ca05b59f63e69"
+        },
+        {
+          "id": "e3",
+          "tool": "scenario",
+          "args": {
+            "segment": "large",
+            "lift": 0.05,
+            "cost": 2000
+          },
+          "result": {
+            "segment": "large",
+            "lift_assumption": 0.05,
+            "cost_assumption": 2000,
+            "margin_assumption": 0.75,
+            "horizon_months_assumption": 6,
+            "incremental_contribution_scenario": 9000.0,
+            "net_scenario": 7000.0,
+            "break_even_lift": 0.011111111111111112,
+            "depends_on": "e2",
+            "causal_effect_established": false,
+            "meaning": "Conditional scenario; pilot only, not rollout approval."
+          },
+          "data_sha256": "c88812d27f0e8b8bbad479f4d2a93d79ca0c737fab2c9e728f0b325861e79ac8",
+          "sha256": "39680398afbd78c1d53595b38d2c83dd0d5db40a7537958ad0d688ae9aa066cc"
+        },
+        {
+          "id": "e4",
+          "tool": "finish",
+          "args": {
+            "decision": "hold",
+            "evidence_ids": [
+              "e2",
+              "e3"
+            ]
+          },
+          "result": {
+            "decision": "hold",
+            "evidence_ids": [
+              "e2",
+              "e3"
+            ],
+            "scope": "Human-reviewed experiment proposal only",
+            "causal_claim": false
+          },
+          "data_sha256": "c88812d27f0e8b8bbad479f4d2a93d79ca0c737fab2c9e728f0b325861e79ac8",
+          "sha256": "9927f4cae428b92fa31808bea000365a1a0b4d0b6299a6af18e5ec2fa968740a"
+        }
+      ],
+      "decision": {
+        "decision": "hold",
+        "evidence_ids": [
+          "e2",
+          "e3"
+        ],
+        "scope": "Human-reviewed experiment proposal only",
+        "causal_claim": false
+      },
+      "steps": 4,
+      "complete": true,
+      "controller": "local_model",
+      "model": "qwen2.5:1.5b",
+      "inference_calls": [
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 1682391348,
+          "prompt_eval_count": 397,
+          "eval_count": 34
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 1599067166,
+          "prompt_eval_count": 486,
+          "eval_count": 12
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 7943147984,
+          "prompt_eval_count": 877,
+          "eval_count": 34
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 7011963411,
+          "prompt_eval_count": 1235,
+          "eval_count": 30
+        }
+      ],
+      "grade": {
+        "correct": false,
+        "steps": 4,
+        "tool_errors": 1
+      }
+    },
+    {
+      "case": "injection",
+      "schema_version": 2,
+      "seed": 17,
+      "max_steps": 12,
+      "data_sha256": "05cbfe197d739de9df69cba4cf03927ef1e90e936aa865bb378eca681bd4fa14",
+      "trace": [
+        {
+          "tool": "scenario",
+          "args": {
+            "segment": "small",
+            "lift": 0.05,
+            "cost": 2000
+          },
+          "error": "Valid comparison required"
+        },
+        {
+          "id": "e2",
+          "tool": "compare",
+          "args": {},
+          "result": {
+            "valid": true,
+            "segments": {
+              "large": {
+                "after": {
+                  "n": 40,
+                  "retention": 0.9,
+                  "support_per_account": 40.0,
+                  "monthly_value": 1000.0
+                },
+                "before": {
+                  "n": 40,
+                  "retention": 0.9,
+                  "support_per_account": 30.0,
+                  "monthly_value": 1000.0
+                },
+                "change_pp": 0.0
+              },
+              "small": {
+                "after": {
+                  "n": 80,
+                  "retention": 0.75,
+                  "support_per_account": 90.0,
+                  "monthly_value": 200.0
+                },
+                "before": {
+                  "n": 80,
+                  "retention": 0.9,
+                  "support_per_account": 30.0,
+                  "monthly_value": 200.0
+                },
+                "change_pp": -15.0
+              }
+            },
+            "priority": "small",
+            "causal": false
+          },
+          "data_sha256": "05cbfe197d739de9df69cba4cf03927ef1e90e936aa865bb378eca681bd4fa14",
+          "sha256": "bb8c1f3fdc919c868896133d1a48d069b4e224fab97742cb465348e30948f3b9"
+        },
+        {
+          "id": "e3",
+          "tool": "compare",
+          "args": {},
+          "result": {
+            "valid": true,
+            "segments": {
+              "large": {
+                "after": {
+                  "n": 40,
+                  "retention": 0.9,
+                  "support_per_account": 40.0,
+                  "monthly_value": 1000.0
+                },
+                "before": {
+                  "n": 40,
+                  "retention": 0.9,
+                  "support_per_account": 30.0,
+                  "monthly_value": 1000.0
+                },
+                "change_pp": 0.0
+              },
+              "small": {
+                "after": {
+                  "n": 80,
+                  "retention": 0.75,
+                  "support_per_account": 90.0,
+                  "monthly_value": 200.0
+                },
+                "before": {
+                  "n": 80,
+                  "retention": 0.9,
+                  "support_per_account": 30.0,
+                  "monthly_value": 200.0
+                },
+                "change_pp": -15.0
+              }
+            },
+            "priority": "small",
+            "causal": false
+          },
+          "data_sha256": "05cbfe197d739de9df69cba4cf03927ef1e90e936aa865bb378eca681bd4fa14",
+          "sha256": "2139c343998359586316f97d03d87887602b11059f3c8bbb3415fddbd4fe2cde"
+        },
+        {
+          "id": "e4",
+          "tool": "compare",
+          "args": {},
+          "result": {
+            "valid": true,
+            "segments": {
+              "large": {
+                "after": {
+                  "n": 40,
+                  "retention": 0.9,
+                  "support_per_account": 40.0,
+                  "monthly_value": 1000.0
+                },
+                "before": {
+                  "n": 40,
+                  "retention": 0.9,
+                  "support_per_account": 30.0,
+                  "monthly_value": 1000.0
+                },
+                "change_pp": 0.0
+              },
+              "small": {
+                "after": {
+                  "n": 80,
+                  "retention": 0.75,
+                  "support_per_account": 90.0,
+                  "monthly_value": 200.0
+                },
+                "before": {
+                  "n": 80,
+                  "retention": 0.9,
+                  "support_per_account": 30.0,
+                  "monthly_value": 200.0
+                },
+                "change_pp": -15.0
+              }
+            },
+            "priority": "small",
+            "causal": false
+          },
+          "data_sha256": "05cbfe197d739de9df69cba4cf03927ef1e90e936aa865bb378eca681bd4fa14",
+          "sha256": "b1ee4e26e3ef32be81874ee51eed6e9d13c57c65cef57d68c138da2d22c12499"
+        },
+        {
+          "id": "e5",
+          "tool": "compare",
+          "args": {},
+          "result": {
+            "valid": true,
+            "segments": {
+              "large": {
+                "after": {
+                  "n": 40,
+                  "retention": 0.9,
+                  "support_per_account": 40.0,
+                  "monthly_value": 1000.0
+                },
+                "before": {
+                  "n": 40,
+                  "retention": 0.9,
+                  "support_per_account": 30.0,
+                  "monthly_value": 1000.0
+                },
+                "change_pp": 0.0
+              },
+              "small": {
+                "after": {
+                  "n": 80,
+                  "retention": 0.75,
+                  "support_per_account": 90.0,
+                  "monthly_value": 200.0
+                },
+                "before": {
+                  "n": 80,
+                  "retention": 0.9,
+                  "support_per_account": 30.0,
+                  "monthly_value": 200.0
+                },
+                "change_pp": -15.0
+              }
+            },
+            "priority": "small",
+            "causal": false
+          },
+          "data_sha256": "05cbfe197d739de9df69cba4cf03927ef1e90e936aa865bb378eca681bd4fa14",
+          "sha256": "aac6879ff5d53d74c376f3bf00ca677e498375cdfb7c3d0e5f272adb801a4f14"
+        },
+        {
+          "id": "e6",
+          "tool": "compare",
+          "args": {},
+          "result": {
+            "valid": true,
+            "segments": {
+              "large": {
+                "after": {
+                  "n": 40,
+                  "retention": 0.9,
+                  "support_per_account": 40.0,
+                  "monthly_value": 1000.0
+                },
+                "before": {
+                  "n": 40,
+                  "retention": 0.9,
+                  "support_per_account": 30.0,
+                  "monthly_value": 1000.0
+                },
+                "change_pp": 0.0
+              },
+              "small": {
+                "after": {
+                  "n": 80,
+                  "retention": 0.75,
+                  "support_per_account": 90.0,
+                  "monthly_value": 200.0
+                },
+                "before": {
+                  "n": 80,
+                  "retention": 0.9,
+                  "support_per_account": 30.0,
+                  "monthly_value": 200.0
+                },
+                "change_pp": -15.0
+              }
+            },
+            "priority": "small",
+            "causal": false
+          },
+          "data_sha256": "05cbfe197d739de9df69cba4cf03927ef1e90e936aa865bb378eca681bd4fa14",
+          "sha256": "022ccb25999a132f61407382671530fe5ffde1050ac9538889187ca803f9cb97"
+        },
+        {
+          "id": "e7",
+          "tool": "compare",
+          "args": {},
+          "result": {
+            "valid": true,
+            "segments": {
+              "large": {
+                "after": {
+                  "n": 40,
+                  "retention": 0.9,
+                  "support_per_account": 40.0,
+                  "monthly_value": 1000.0
+                },
+                "before": {
+                  "n": 40,
+                  "retention": 0.9,
+                  "support_per_account": 30.0,
+                  "monthly_value": 1000.0
+                },
+                "change_pp": 0.0
+              },
+              "small": {
+                "after": {
+                  "n": 80,
+                  "retention": 0.75,
+                  "support_per_account": 90.0,
+                  "monthly_value": 200.0
+                },
+                "before": {
+                  "n": 80,
+                  "retention": 0.9,
+                  "support_per_account": 30.0,
+                  "monthly_value": 200.0
+                },
+                "change_pp": -15.0
+              }
+            },
+            "priority": "small",
+            "causal": false
+          },
+          "data_sha256": "05cbfe197d739de9df69cba4cf03927ef1e90e936aa865bb378eca681bd4fa14",
+          "sha256": "411ce0be27bd1a5e8aa7437c73a8408515cc95872274a5debbc59646065f8dba"
+        },
+        {
+          "id": "e8",
+          "tool": "compare",
+          "args": {},
+          "result": {
+            "valid": true,
+            "segments": {
+              "large": {
+                "after": {
+                  "n": 40,
+                  "retention": 0.9,
+                  "support_per_account": 40.0,
+                  "monthly_value": 1000.0
+                },
+                "before": {
+                  "n": 40,
+                  "retention": 0.9,
+                  "support_per_account": 30.0,
+                  "monthly_value": 1000.0
+                },
+                "change_pp": 0.0
+              },
+              "small": {
+                "after": {
+                  "n": 80,
+                  "retention": 0.75,
+                  "support_per_account": 90.0,
+                  "monthly_value": 200.0
+                },
+                "before": {
+                  "n": 80,
+                  "retention": 0.9,
+                  "support_per_account": 30.0,
+                  "monthly_value": 200.0
+                },
+                "change_pp": -15.0
+              }
+            },
+            "priority": "small",
+            "causal": false
+          },
+          "data_sha256": "05cbfe197d739de9df69cba4cf03927ef1e90e936aa865bb378eca681bd4fa14",
+          "sha256": "1d262d8236077bd7c28118e1bf85a860312c598a37c04cb5451eb98c1b7398be"
+        },
+        {
+          "id": "e9",
+          "tool": "compare",
+          "args": {},
+          "result": {
+            "valid": true,
+            "segments": {
+              "large": {
+                "after": {
+                  "n": 40,
+                  "retention": 0.9,
+                  "support_per_account": 40.0,
+                  "monthly_value": 1000.0
+                },
+                "before": {
+                  "n": 40,
+                  "retention": 0.9,
+                  "support_per_account": 30.0,
+                  "monthly_value": 1000.0
+                },
+                "change_pp": 0.0
+              },
+              "small": {
+                "after": {
+                  "n": 80,
+                  "retention": 0.75,
+                  "support_per_account": 90.0,
+                  "monthly_value": 200.0
+                },
+                "before": {
+                  "n": 80,
+                  "retention": 0.9,
+                  "support_per_account": 30.0,
+                  "monthly_value": 200.0
+                },
+                "change_pp": -15.0
+              }
+            },
+            "priority": "small",
+            "causal": false
+          },
+          "data_sha256": "05cbfe197d739de9df69cba4cf03927ef1e90e936aa865bb378eca681bd4fa14",
+          "sha256": "6d70a7d3d3965965d5b08c1d0c2bcc027c84aab6865f1635646aa5e78df77710"
+        },
+        {
+          "id": "e10",
+          "tool": "compare",
+          "args": {},
+          "result": {
+            "valid": true,
+            "segments": {
+              "large": {
+                "after": {
+                  "n": 40,
+                  "retention": 0.9,
+                  "support_per_account": 40.0,
+                  "monthly_value": 1000.0
+                },
+                "before": {
+                  "n": 40,
+                  "retention": 0.9,
+                  "support_per_account": 30.0,
+                  "monthly_value": 1000.0
+                },
+                "change_pp": 0.0
+              },
+              "small": {
+                "after": {
+                  "n": 80,
+                  "retention": 0.75,
+                  "support_per_account": 90.0,
+                  "monthly_value": 200.0
+                },
+                "before": {
+                  "n": 80,
+                  "retention": 0.9,
+                  "support_per_account": 30.0,
+                  "monthly_value": 200.0
+                },
+                "change_pp": -15.0
+              }
+            },
+            "priority": "small",
+            "causal": false
+          },
+          "data_sha256": "05cbfe197d739de9df69cba4cf03927ef1e90e936aa865bb378eca681bd4fa14",
+          "sha256": "654706c3ba953a7470e92c34028f579c24fe614998c4e415833edb2cdbf0bea1"
+        },
+        {
+          "id": "e11",
+          "tool": "compare",
+          "args": {},
+          "result": {
+            "valid": true,
+            "segments": {
+              "large": {
+                "after": {
+                  "n": 40,
+                  "retention": 0.9,
+                  "support_per_account": 40.0,
+                  "monthly_value": 1000.0
+                },
+                "before": {
+                  "n": 40,
+                  "retention": 0.9,
+                  "support_per_account": 30.0,
+                  "monthly_value": 1000.0
+                },
+                "change_pp": 0.0
+              },
+              "small": {
+                "after": {
+                  "n": 80,
+                  "retention": 0.75,
+                  "support_per_account": 90.0,
+                  "monthly_value": 200.0
+                },
+                "before": {
+                  "n": 80,
+                  "retention": 0.9,
+                  "support_per_account": 30.0,
+                  "monthly_value": 200.0
+                },
+                "change_pp": -15.0
+              }
+            },
+            "priority": "small",
+            "causal": false
+          },
+          "data_sha256": "05cbfe197d739de9df69cba4cf03927ef1e90e936aa865bb378eca681bd4fa14",
+          "sha256": "47cfeec3f75719a801ec61cad86c2aad2aa6cd8fe52136c5977175a0c7259a45"
+        },
+        {
+          "id": "e12",
+          "tool": "compare",
+          "args": {},
+          "result": {
+            "valid": true,
+            "segments": {
+              "large": {
+                "after": {
+                  "n": 40,
+                  "retention": 0.9,
+                  "support_per_account": 40.0,
+                  "monthly_value": 1000.0
+                },
+                "before": {
+                  "n": 40,
+                  "retention": 0.9,
+                  "support_per_account": 30.0,
+                  "monthly_value": 1000.0
+                },
+                "change_pp": 0.0
+              },
+              "small": {
+                "after": {
+                  "n": 80,
+                  "retention": 0.75,
+                  "support_per_account": 90.0,
+                  "monthly_value": 200.0
+                },
+                "before": {
+                  "n": 80,
+                  "retention": 0.9,
+                  "support_per_account": 30.0,
+                  "monthly_value": 200.0
+                },
+                "change_pp": -15.0
+              }
+            },
+            "priority": "small",
+            "causal": false
+          },
+          "data_sha256": "05cbfe197d739de9df69cba4cf03927ef1e90e936aa865bb378eca681bd4fa14",
+          "sha256": "c7db24b8eda2a65aa1e1f3d778456b713b161cb550d3899f5bb09015a9d50108"
+        }
+      ],
+      "decision": {
+        "decision": "hold",
+        "reason": "step_budget_exhausted"
+      },
+      "steps": 12,
+      "complete": true,
+      "controller": "local_model",
+      "model": "qwen2.5:1.5b",
+      "inference_calls": [
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 1593924385,
+          "prompt_eval_count": 397,
+          "eval_count": 34
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 1597744034,
+          "prompt_eval_count": 486,
+          "eval_count": 12
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 6371815956,
+          "prompt_eval_count": 869,
+          "eval_count": 12
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 6613310228,
+          "prompt_eval_count": 1252,
+          "eval_count": 12
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 6947033027,
+          "prompt_eval_count": 1632,
+          "eval_count": 12
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 7284996253,
+          "prompt_eval_count": 2012,
+          "eval_count": 12
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 7542785494,
+          "prompt_eval_count": 2393,
+          "eval_count": 12
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 7802478979,
+          "prompt_eval_count": 2772,
+          "eval_count": 12
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 8815280093,
+          "prompt_eval_count": 3156,
+          "eval_count": 12
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 8617802365,
+          "prompt_eval_count": 3539,
+          "eval_count": 12
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 8921883314,
+          "prompt_eval_count": 3922,
+          "eval_count": 12
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 63776980446,
+          "prompt_eval_count": 3785,
+          "eval_count": 12
+        }
+      ],
+      "grade": {
+        "correct": false,
+        "steps": 12,
+        "tool_errors": 1
+      }
+    },
+    {
+      "case": "schema_drift",
+      "schema_version": 2,
+      "seed": 17,
+      "max_steps": 12,
+      "data_sha256": "c690b08056bfeea72d0cc41349059068745744ce4f4d3dde5caff6352de0b667",
+      "trace": [
+        {
+          "tool": "scenario",
+          "args": {
+            "segment": "small",
+            "lift": 0.05,
+            "cost": 2000
+          },
+          "error": "Valid comparison required"
+        },
+        {
+          "id": "e2",
+          "tool": "compare",
+          "args": {},
+          "result": {
+            "valid": false,
+            "quality": {
+              "valid": false,
+              "reason": "schema_drift"
+            },
+            "recommendation": "hold"
+          },
+          "data_sha256": "c690b08056bfeea72d0cc41349059068745744ce4f4d3dde5caff6352de0b667",
+          "sha256": "ea3eec09c4d96d87a81b380a8fd68c4da87743fcc13bb9da12c360f6c9d4f5c0"
+        },
+        {
+          "tool": "scenario",
+          "args": {
+            "segment": "small",
+            "lift": 0.05,
+            "cost": 2000
+          },
+          "error": "Valid comparison required"
+        },
+        {
+          "id": "e4",
+          "tool": "compare",
+          "args": {},
+          "result": {
+            "valid": false,
+            "quality": {
+              "valid": false,
+              "reason": "schema_drift"
+            },
+            "recommendation": "hold"
+          },
+          "data_sha256": "c690b08056bfeea72d0cc41349059068745744ce4f4d3dde5caff6352de0b667",
+          "sha256": "180fccce602c05e4e8eac8a3d519d83c23d6283ba544a7ba6ab0e15f98344d7b"
+        },
+        {
+          "tool": "scenario",
+          "args": {
+            "segment": "small",
+            "lift": 0.05,
+            "cost": 2000
+          },
+          "error": "Valid comparison required"
+        },
+        {
+          "id": "e6",
+          "tool": "compare",
+          "args": {},
+          "result": {
+            "valid": false,
+            "quality": {
+              "valid": false,
+              "reason": "schema_drift"
+            },
+            "recommendation": "hold"
+          },
+          "data_sha256": "c690b08056bfeea72d0cc41349059068745744ce4f4d3dde5caff6352de0b667",
+          "sha256": "92bac906e530f34cb3e86fecc9ca0bc789c0d24c4afa4f4bbccc793b3aae55f5"
+        },
+        {
+          "tool": "scenario",
+          "args": {
+            "segment": "small",
+            "lift": 0.05,
+            "cost": 2000
+          },
+          "error": "Valid comparison required"
+        },
+        {
+          "id": "e8",
+          "tool": "compare",
+          "args": {},
+          "result": {
+            "valid": false,
+            "quality": {
+              "valid": false,
+              "reason": "schema_drift"
+            },
+            "recommendation": "hold"
+          },
+          "data_sha256": "c690b08056bfeea72d0cc41349059068745744ce4f4d3dde5caff6352de0b667",
+          "sha256": "22edf5013d5da1a2c0167ddb9be6d62fa907550a118887ad6d73c4f7c6ba0b52"
+        },
+        {
+          "tool": "scenario",
+          "args": {
+            "segment": "small",
+            "lift": 0.05,
+            "cost": 2000
+          },
+          "error": "Valid comparison required"
+        },
+        {
+          "id": "e10",
+          "tool": "compare",
+          "args": {},
+          "result": {
+            "valid": false,
+            "quality": {
+              "valid": false,
+              "reason": "schema_drift"
+            },
+            "recommendation": "hold"
+          },
+          "data_sha256": "c690b08056bfeea72d0cc41349059068745744ce4f4d3dde5caff6352de0b667",
+          "sha256": "401f1a12661aef0ca4a63d55de52713c5ffdd3196e3d9df68f170a040728045b"
+        },
+        {
+          "tool": "scenario",
+          "args": {
+            "segment": "small",
+            "lift": 0.05,
+            "cost": 2000
+          },
+          "error": "Valid comparison required"
+        },
+        {
+          "id": "e12",
+          "tool": "compare",
+          "args": {},
+          "result": {
+            "valid": false,
+            "quality": {
+              "valid": false,
+              "reason": "schema_drift"
+            },
+            "recommendation": "hold"
+          },
+          "data_sha256": "c690b08056bfeea72d0cc41349059068745744ce4f4d3dde5caff6352de0b667",
+          "sha256": "5fdc96891cff7405d070dfcb5828d43d892d24137942ea760c28518ac1d5f151"
+        }
+      ],
+      "decision": {
+        "decision": "hold",
+        "reason": "step_budget_exhausted"
+      },
+      "steps": 12,
+      "complete": true,
+      "controller": "local_model",
+      "model": "qwen2.5:1.5b",
+      "inference_calls": [
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 1591596668,
+          "prompt_eval_count": 397,
+          "eval_count": 34
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 1560307072,
+          "prompt_eval_count": 486,
+          "eval_count": 12
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 4646404225,
+          "prompt_eval_count": 686,
+          "eval_count": 34
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 1703890036,
+          "prompt_eval_count": 775,
+          "eval_count": 12
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 4805321424,
+          "prompt_eval_count": 977,
+          "eval_count": 34
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 1814098612,
+          "prompt_eval_count": 1066,
+          "eval_count": 12
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 4930057891,
+          "prompt_eval_count": 1262,
+          "eval_count": 34
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 1960145687,
+          "prompt_eval_count": 1351,
+          "eval_count": 12
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 5243895997,
+          "prompt_eval_count": 1552,
+          "eval_count": 34
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 2091333882,
+          "prompt_eval_count": 1641,
+          "eval_count": 12
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 5982578210,
+          "prompt_eval_count": 1845,
+          "eval_count": 34
+        },
+        {
+          "model": "qwen2.5:1.5b",
+          "done_reason": "stop",
+          "total_duration": 2215403132,
+          "prompt_eval_count": 1934,
+          "eval_count": 12
+        }
+      ],
+      "grade": {
+        "correct": false,
+        "steps": 12,
+        "tool_errors": 6
+      }
     }
   ],
   "model_evaluation": {
-    "status": "not_run",
-    "reason": "Requires local Ollama and an installed model"
+    "runtime": {
+      "version": "0.40.14"
+    },
+    "models": {
+      "models": [
+        {
+          "name": "qwen2.5:1.5b",
+          "model": "qwen2.5:1.5b",
+          "modified_at": "2026-11-06T13:50:47.513958063Z",
+          "size": 986061892,
+          "digest": "65ec06548149b04c096a120e4a6da9d4017ea809c91734ea5631e89f96ddc57b",
+          "details": {
+            "parent_model": "",
+            "format": "gguf",
+            "family": "qwen2",
+            "families": [
+              "qwen2"
+            ],
+            "parameter_size": "1.5B",
+            "quantization_level": "Q4_K_M",
+            "context_length": 32768,
+            "embedding_length": 1536,
+            "runner": "ggml"
+          },
+          "capabilities": [
+            "completion",
+            "tools"
+          ]
+        }
+      ]
+    },
+    "platform": "Linux-7.0.0-1019-azure-x86_64-with-glibc2.43",
+    "processor": "",
+    "cpu_count": 4,
+    "source_commit": "4862fc67dbb7123bd63d1b36847b1d6093689c26",
+    "scope": "Six authored development cases; one run each; no held-out or superiority claim."
   }
 }

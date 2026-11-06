@@ -21,8 +21,14 @@ def build(output='site/runs.json'):
         for case in CASES:
             run=run_baseline(case, adaptive=adaptive)
             runs.append({'case':case, **run, 'grade':grade(run,ORACLE[case])})
-    result={'notice':'Synthetic authored regression cases. Both measured controllers are deterministic rules, not LLMs. Live local-model performance has not been measured.',
-            'runs':runs, 'model_evaluation':{'status':'not_run','reason':'Requires local Ollama and an installed model'}}
+    evidence_path = Path(__file__).resolve().parents[1]/'evaluation/published-evidence.json'
+    measured = json.loads(evidence_path.read_text()) if evidence_path.exists() else None
+    if measured:
+        for entry in measured['report']['results']:
+            if 'run' in entry:
+                runs.append({'case':entry['case'], **entry['run'], 'grade':grade(entry['run'],ORACLE[entry['case']])})
+    result={'notice':'Synthetic authored cases. Rule policies and measured inference are distinct controllers. No held-out generalization claim.',
+            'runs':runs, 'model_evaluation':measured['environment'] if measured else {'status':'not_run'}}
     Path(output).parent.mkdir(parents=True,exist_ok=True)
     Path(output).write_text(json.dumps(result,indent=2)+'\n')
     return result

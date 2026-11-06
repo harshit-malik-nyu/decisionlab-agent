@@ -4,7 +4,7 @@
 
 DecisionLab explores a practical question: can a tool-using agent turn a retention anomaly into a defensible experiment proposal, while refusing to act on incomplete evidence?
 
-**Status: research prototype, v0.3.** The local-model action loop is implemented. Automated tests exercise it with test doubles. No real-model evaluation has been completed in the build environment: its local inference endpoint is unavailable. The included replay and scores are **deterministic rule-policy runs**, not AI-generated runs. There is no claim of state-of-the-art performance or demonstrated employer demand.
+**Status: research prototype, v0.3.** Real local-model inference has now been measured on six authored development cases. Qwen2.5 1.5B scored **0/6** on evidence-backed decision correctness. This is a negative result, preserved in `evaluation/qwen2.5-1.5b-evidence.json`, with model digest, runtime, source commit, prompt and source hashes, tool traces, timings and token counts. It demonstrates that safe execution gates do not by themselves establish useful agent reasoning. Rule-policy scores are separate and are not AI performance. No state-of-the-art or hiring-demand claim is made.
 
 ## Review in five minutes
 
@@ -32,7 +32,7 @@ ollama pull qwen3:4b
 python -m decisionlab agent --model qwen3:4b --case clean --output local-run.json
 ```
 
-Ollama must be serving on `127.0.0.1:11434`. This project does not require an inference subscription. Model downloads, RAM, disk, electricity and hardware are still resources; zero paid API cost does not mean zero resource use. The exact model tag is configurable and no model quality is assumed.
+Ollama must be serving on `127.0.0.1:11434`. This project does not require an inference subscription. Model downloads, RAM, disk, electricity and hardware are still resources; zero paid API cost does not mean zero resource use. The exact model tag is configurable and no model quality is assumed. The hosted evaluation workflow uses its explicitly configured model.
 
 If the endpoint fails, the command fails visibly. **It never silently substitutes the rules baseline.** Local-model runs are not automatically uploaded. Review traces before sharing them.
 
