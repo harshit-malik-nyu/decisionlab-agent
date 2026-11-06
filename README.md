@@ -114,7 +114,7 @@ The verifier regenerates the synthetic dataset and re-executes tool calls, check
 
 The evaluator writes an atomic checkpoint after each completed or failed case. Repeating the command resumes remaining cases only when the model tag, Python version, source hashes, prompt hash, cases and budgets match. Completed traces are replay-validated before resume. Failed cases remain visible and are not silently retried; use a new report for a new trial. An unfinished in-flight case can be lost, and a checkpoint must still be backed up outside an ephemeral workspace. A model tag can change upstream and is not an immutable model digest.
 
-The suite now contains **48 tests**. Model-adapter and interruption tests use explicit test doubles; they are not measurements of model intelligence.
+The suite now contains **51 tests**. Model-adapter and interruption tests use explicit test doubles; they are not measurements of model intelligence.
 
 
 ## Measured comparison and attribution
@@ -146,3 +146,6 @@ The generated stress suite independently checks pilot eligibility for both segme
 
 ### Reviewer decision brief
 Read [the generated decision brief](docs/DECISION_BRIEF.md) for the Data, Business and Product work sample: validated descriptive metrics, 12 economic scenarios, break-even sensitivity, an experiment specification, measurement contract and acceptance criteria. CI regenerates the brief directly from the analytics engine.
+
+### Prospective challenge evaluation
+[Protocol v1](docs/CHALLENGE_PROTOCOL.md) freezes six additional authored cases before model inference. It tests improving/flat retention, a misleading question premise, tied priorities, incomplete panels and segment migration, with a separately graded deterministic reference. Results must be reported as authored challenge testing, not independent held-out validation.

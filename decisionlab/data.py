@@ -5,8 +5,10 @@ import sqlite3
 
 CASES = ('clean', 'duplicates', 'missing', 'reversal', 'injection', 'schema_drift')
 
+CHALLENGE_CASES = ('improving', 'flat', 'support_only', 'tied_decline', 'incomplete_panel', 'segment_migration')
+
 def dataset(case='clean', seed=17):
-    if case not in CASES:
+    if case not in CASES + CHALLENGE_CASES:
         raise ValueError('Unknown case')
     rows = []
     for i in range(120):
@@ -28,6 +30,21 @@ def dataset(case='clean', seed=17):
         for r in rows:
             if r[2] == 'after':
                 r[3] = int(r[0] % (10 if r[1] == 'small' else 2) != 0)
+    if case in ('improving','flat','support_only','tied_decline'):
+        for r in rows:
+            if case=='improving':
+                r[3]=int(r[0]%10 != 0) if r[2]=='after' else int(r[0]%4 != 0)
+            elif case in ('flat','support_only'):
+                r[3]=int(r[0]%10 != 0)
+            else:
+                r[3]=int(r[0]%4 != 0) if r[2]=='after' else int(r[0]%10 != 0)
+            if case=='flat':r[5]=30
+            if case=='support_only' and r[2]=='after':r[5]=500
+    if case=='incomplete_panel':
+        rows=[r for r in rows if not(r[0]==17 and r[2]=='after')]
+    if case=='segment_migration':
+        for r in rows:
+            if r[0]==17 and r[2]=='after':r[1]='large'
     columns = ['account_id', 'segment', 'period', 'retained', 'monthly_value', 'support_cost']
     if case == 'schema_drift':
         columns[3] = 'renewed'
