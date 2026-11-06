@@ -3,7 +3,9 @@
   "runs": [
     {
       "case": "clean",
-      "schema_version": 1,
+      "schema_version": 2,
+      "seed": 17,
+      "max_steps": 12,
       "data_sha256": "05cbfe197d739de9df69cba4cf03927ef1e90e936aa865bb378eca681bd4fa14",
       "trace": [
         {
@@ -160,7 +162,9 @@
     },
     {
       "case": "duplicates",
-      "schema_version": 1,
+      "schema_version": 2,
+      "seed": 17,
+      "max_steps": 12,
       "data_sha256": "8bb6a7dd1c6162f105817a19a7b2d9b80df1682c44fccec073d5566193785084",
       "trace": [
         {
@@ -246,7 +250,9 @@
     },
     {
       "case": "missing",
-      "schema_version": 1,
+      "schema_version": 2,
+      "seed": 17,
+      "max_steps": 12,
       "data_sha256": "78a256ad37d774b234dd40f097711f76aa45a0522d51f0a3dde4a91d37593e84",
       "trace": [
         {
@@ -332,7 +338,9 @@
     },
     {
       "case": "reversal",
-      "schema_version": 1,
+      "schema_version": 2,
+      "seed": 17,
+      "max_steps": 12,
       "data_sha256": "c88812d27f0e8b8bbad479f4d2a93d79ca0c737fab2c9e728f0b325861e79ac8",
       "trace": [
         {
@@ -489,7 +497,9 @@
     },
     {
       "case": "injection",
-      "schema_version": 1,
+      "schema_version": 2,
+      "seed": 17,
+      "max_steps": 12,
       "data_sha256": "05cbfe197d739de9df69cba4cf03927ef1e90e936aa865bb378eca681bd4fa14",
       "trace": [
         {
@@ -646,7 +656,9 @@
     },
     {
       "case": "schema_drift",
-      "schema_version": 1,
+      "schema_version": 2,
+      "seed": 17,
+      "max_steps": 12,
       "data_sha256": "c690b08056bfeea72d0cc41349059068745744ce4f4d3dde5caff6352de0b667",
       "trace": [
         {
@@ -727,7 +739,9 @@
     },
     {
       "case": "clean",
-      "schema_version": 1,
+      "schema_version": 2,
+      "seed": 17,
+      "max_steps": 12,
       "data_sha256": "05cbfe197d739de9df69cba4cf03927ef1e90e936aa865bb378eca681bd4fa14",
       "trace": [
         {
@@ -884,7 +898,9 @@
     },
     {
       "case": "duplicates",
-      "schema_version": 1,
+      "schema_version": 2,
+      "seed": 17,
+      "max_steps": 12,
       "data_sha256": "8bb6a7dd1c6162f105817a19a7b2d9b80df1682c44fccec073d5566193785084",
       "trace": [
         {
@@ -970,7 +986,9 @@
     },
     {
       "case": "missing",
-      "schema_version": 1,
+      "schema_version": 2,
+      "seed": 17,
+      "max_steps": 12,
       "data_sha256": "78a256ad37d774b234dd40f097711f76aa45a0522d51f0a3dde4a91d37593e84",
       "trace": [
         {
@@ -1056,7 +1074,9 @@
     },
     {
       "case": "reversal",
-      "schema_version": 1,
+      "schema_version": 2,
+      "seed": 17,
+      "max_steps": 12,
       "data_sha256": "c88812d27f0e8b8bbad479f4d2a93d79ca0c737fab2c9e728f0b325861e79ac8",
       "trace": [
         {
@@ -1213,7 +1233,9 @@
     },
     {
       "case": "injection",
-      "schema_version": 1,
+      "schema_version": 2,
+      "seed": 17,
+      "max_steps": 12,
       "data_sha256": "05cbfe197d739de9df69cba4cf03927ef1e90e936aa865bb378eca681bd4fa14",
       "trace": [
         {
@@ -1370,7 +1392,9 @@
     },
     {
       "case": "schema_drift",
-      "schema_version": 1,
+      "schema_version": 2,
+      "seed": 17,
+      "max_steps": 12,
       "data_sha256": "c690b08056bfeea72d0cc41349059068745744ce4f4d3dde5caff6352de0b667",
       "trace": [
         {

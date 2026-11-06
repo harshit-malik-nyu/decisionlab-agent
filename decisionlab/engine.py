@@ -21,6 +21,7 @@ class Investigation:
         if not 1 <= max_steps <= 40:
             raise ValueError('Step budget must be 1..40')
         self.db, self.data_hash, self.document = dataset(case, seed)
+        self.case, self.seed = case, seed
         self.max_steps = max_steps
         self.trace = []
         self.evidence = {}
@@ -158,7 +159,7 @@ class Investigation:
         return copy.deepcopy(record)
 
     def export(self):
-        return copy.deepcopy({'schema_version':1, 'data_sha256':self.data_hash, 'trace':self.trace, 'decision':self.decision,
+        return copy.deepcopy({'schema_version':2, 'case':self.case, 'seed':self.seed, 'max_steps':self.max_steps, 'data_sha256':self.data_hash, 'trace':self.trace, 'decision':self.decision,
                 'steps':len(self.trace), 'complete':self.done})
 
     def close(self):

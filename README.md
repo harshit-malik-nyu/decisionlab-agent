@@ -101,3 +101,17 @@ The current release validates complete before/after account panels, stable segme
 The evaluator requires a hold decision to cite invalid quality/comparison evidence. Exhausting the step budget receives no correctness credit. Segment scoring uses the scenario actually cited in the final decision, not the last scenario explored. These checks are covered by 24 automated tests, including five distinct malformed-panel subcases.
 
 Exploratory local-model runs were attempted during development, but their temporary artifacts were lost after a session interruption. They are not included as reproducible performance evidence. The public replay continues to show explicitly labeled rule policies.
+
+## Re-execute evidence and checkpoint model evaluations
+
+```sh
+python -m decisionlab demo --output trace.json
+python -m decisionlab.verify trace.json
+python -m decisionlab.evaluate --model qwen3:4b --output evaluation/run.json
+```
+
+The verifier regenerates the synthetic dataset and re-executes tool calls, checking results, final decisions, completion state and record hashes. It catches a fabricated result even if someone recomputes that result's hash. It trusts the installed source and fixture generator; it does not authenticate real-world business data. Version-1 traces must be regenerated for this verifier.
+
+The evaluator writes an atomic checkpoint after each completed or failed case. Repeating the command resumes remaining cases only when the model tag, Python version, source hashes, prompt hash, cases and budgets match. Completed traces are replay-validated before resume. Failed cases remain visible and are not silently retried; use a new report for a new trial. An unfinished in-flight case can be lost, and a checkpoint must still be backed up outside an ephemeral workspace. A model tag can change upstream and is not an immutable model digest.
+
+The suite now contains **30 tests**. Model-adapter and interruption tests use explicit test doubles; they are not measurements of model intelligence.
