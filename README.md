@@ -114,7 +114,7 @@ The verifier regenerates the synthetic dataset and re-executes tool calls, check
 
 The evaluator writes an atomic checkpoint after each completed or failed case. Repeating the command resumes remaining cases only when the model tag, Python version, source hashes, prompt hash, cases and budgets match. Completed traces are replay-validated before resume. Failed cases remain visible and are not silently retried; use a new report for a new trial. An unfinished in-flight case can be lost, and a checkpoint must still be backed up outside an ephemeral workspace. A model tag can change upstream and is not an immutable model digest.
 
-The suite now contains **40 tests**. Model-adapter and interruption tests use explicit test doubles; they are not measurements of model intelligence.
+The suite now contains **44 tests**. Model-adapter and interruption tests use explicit test doubles; they are not measurements of model intelligence.
 
 
 ## Measured comparison and attribution
@@ -133,3 +133,8 @@ Reproduce measured runs through `.github/workflows/model-smoke.yml`. Downloadabl
 
 ### Publication integrity
 The interactive viewer includes all three measured model runs, including failures. These are historical development runs, not a controlled ablation: code and prompts evolved. Publication re-executes every saved trace and rejects incomplete case coverage, duplicate cases, changed case identities, stale grades and inflated aggregate scores.
+
+### Generated analytics stress checks
+Run `python -m decisionlab.stress` to reproduce **600/600 passing engine checks**: 100 generated business datasets, each tested unmodified and with five data corruptions. Cohort sizes, retention rates, values, support costs and row order vary. An independent Python/Decimal arithmetic oracle checks retention deltas and scenario economics; invalid panels must fail closed. CI regenerates and compares the committed report on Python 3.11–3.13.
+
+This is deterministic engine testing, not 600 model evaluations, not independent external validation, and not proof of generalization. Initial exploration found six datasets with floating-point cent discrepancies between calculation orders (seeds 1001, 1015, 1032, 1062, 1068, 1080). Currency calculations now use Decimal with explicit ROUND_HALF_UP. A regression asserts that 1057.725 becomes 1057.73. Earlier recorded model traces still replay successfully.

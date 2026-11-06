@@ -1,3 +1,4 @@
+from decimal import Decimal, ROUND_HALF_UP
 import hashlib
 import json
 import math
@@ -103,10 +104,11 @@ class Investigation:
         if lift > 1-g['retention'] + 1e-9:
             raise ValueError('Lift exceeds available retention headroom')
         margin, horizon = .75, 6
-        contribution = g['n']*lift*g['monthly_value']*margin*horizon
+        contribution = Decimal(g['n'])*Decimal(str(lift))*Decimal(str(g['monthly_value']))*Decimal(str(margin))*horizon
+        money = lambda value: float(value.quantize(Decimal('0.01'), rounding=ROUND_HALF_UP))
         return {'segment': segment, 'lift_assumption': lift, 'cost_assumption': cost, 'margin_assumption': margin,
-                'horizon_months_assumption': horizon, 'incremental_contribution_scenario': round(contribution,2),
-                'net_scenario': round(contribution-cost,2), 'break_even_lift': cost/(g['n']*g['monthly_value']*margin*horizon),
+                'horizon_months_assumption': horizon, 'incremental_contribution_scenario': money(contribution),
+                'net_scenario': money(contribution-Decimal(str(cost))), 'break_even_lift': cost/(g['n']*g['monthly_value']*margin*horizon),
                 'depends_on': ref, 'causal_effect_established': False, 'meaning': 'Conditional scenario; pilot only, not rollout approval.'}
 
     def step(self, tool, args=None):
