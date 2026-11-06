@@ -14,7 +14,7 @@ TOOLS = {
     'sql': 'Read-only bounded query. Arguments: query (string). Exploratory output cannot certify a recommendation.',
     'compare': 'Compute verified before/after segment metrics; no arguments. Fails closed on invalid data.',
     'scenario': 'Conditional pilot economics. Arguments: segment (small|large), lift (0..0.20), cost (0..10000). Requires compare. Lift is an assumption, not an estimated causal effect.',
-    'finish': 'Arguments: evidence_ids (list), decision (pilot|hold). A pilot requires valid scenario and comparison evidence. No automatic spending.'
+    'finish': 'Arguments: evidence_ids (list), decision (pilot|hold). A retention-recovery pilot requires observed segment decline plus valid scenario and comparison evidence. No automatic spending.'
 }
 
 class Investigation:
@@ -145,6 +145,8 @@ class Investigation:
                     scenarios = [self.evidence[r]['result'] for r in refs if self.evidence[r]['tool']=='scenario']
                     if len(scenarios)!=1 or any(s['depends_on'] not in refs for s in scenarios):
                         raise ValueError('Cite scenario and its comparison')
+                    if any(self.evidence[s['depends_on']]['result']['segments'][s['segment']]['change_pp'] >= 0 for s in scenarios):
+                        raise ValueError('Retention-recovery pilot requires observed segment decline')
                     if not self._quality()['valid'] or any(s['net_scenario'] <= 0 for s in scenarios):
                         raise ValueError('Pilot fails evidence/economic gate')
                 result = {'decision': decision, 'evidence_ids': refs, 'scope': 'Human-reviewed experiment proposal only', 'causal_claim': False}

@@ -455,7 +455,6 @@
           "sha256": "a1240315b6c4c48aa58ae7424b6ee168433fdc82d47aa9d2e1d9255276f3d7e9"
         },
         {
-          "id": "e6",
           "tool": "finish",
           "args": {
             "decision": "pilot",
@@ -464,35 +463,17 @@
               "e5"
             ]
           },
-          "result": {
-            "decision": "pilot",
-            "evidence_ids": [
-              "e4",
-              "e5"
-            ],
-            "scope": "Human-reviewed experiment proposal only",
-            "causal_claim": false
-          },
-          "data_sha256": "c88812d27f0e8b8bbad479f4d2a93d79ca0c737fab2c9e728f0b325861e79ac8",
-          "sha256": "1192cdac6646a3562ca11061d46039fcd429254e375889d258fa17ae0220b89b"
+          "error": "Retention-recovery pilot requires observed segment decline"
         }
       ],
-      "decision": {
-        "decision": "pilot",
-        "evidence_ids": [
-          "e4",
-          "e5"
-        ],
-        "scope": "Human-reviewed experiment proposal only",
-        "causal_claim": false
-      },
+      "decision": null,
       "steps": 6,
-      "complete": true,
+      "complete": false,
       "controller": "fixed_rules",
       "grade": {
         "correct": false,
         "steps": 6,
-        "tool_errors": 0
+        "tool_errors": 1
       }
     },
     {

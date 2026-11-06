@@ -61,6 +61,17 @@ def check(seed,mutation=None):
                     scenario=lab.step('scenario',{'segment':segment,'lift':lift,'cost':cost})
                     expected_net=float((Decimal(sum(r[4] for r in after))*Decimal('0.01')*Decimal('0.75')*6-Decimal(cost)).quantize(Decimal('0.01'),rounding=ROUND_HALF_UP))
                     if scenario.get('result',{}).get('net_scenario')!=expected_net:errors.append('Economics mismatch')
+                    # A fresh investigation avoids one segment's terminal decision affecting another.
+                    with patch('decisionlab.engine.dataset',side_effect=lambda *_:make_dataset(rows)):
+                        gate=Investigation()
+                    try:
+                        c=gate.step('compare')
+                        s=gate.step('scenario',{'segment':segment,'lift':lift,'cost':cost})
+                        f=gate.step('finish',{'decision':'pilot','evidence_ids':[c['id'],s['id']]})
+                        expected_accept=expected<0 and expected_net>0
+                        if ('result' in f)!=expected_accept:errors.append('Recovery decision gate mismatch')
+                    finally:gate.close()
+
         return {'seed':seed,'mutation':mutation or 'none','data_sha256':lab.data_hash,'passed':not errors,'errors':errors}
     finally:lab.close()
 
@@ -68,6 +79,7 @@ def build(count=100):
     results=[check(seed,mutation) for seed in range(1000,1000+count) for mutation in (None,*MUTATIONS)]
     return {'scope':'Generated deterministic engine stress checks, not LLM evaluation or independently authored held-out tasks.',
             'generator':'Python random.Random; seeds 1000 onward; varied cohort sizes, retention rates, values, support costs and row order',
+            'checks':['data validity','retention arithmetic','decimal economics','recovery pilot eligibility'],
             'passed':sum(r['passed'] for r in results),'total':len(results),'results':results}
 
 if __name__=='__main__':

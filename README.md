@@ -114,7 +114,7 @@ The verifier regenerates the synthetic dataset and re-executes tool calls, check
 
 The evaluator writes an atomic checkpoint after each completed or failed case. Repeating the command resumes remaining cases only when the model tag, Python version, source hashes, prompt hash, cases and budgets match. Completed traces are replay-validated before resume. Failed cases remain visible and are not silently retried; use a new report for a new trial. An unfinished in-flight case can be lost, and a checkpoint must still be backed up outside an ephemeral workspace. A model tag can change upstream and is not an immutable model digest.
 
-The suite now contains **44 tests**. Model-adapter and interruption tests use explicit test doubles; they are not measurements of model intelligence.
+The suite now contains **48 tests**. Model-adapter and interruption tests use explicit test doubles; they are not measurements of model intelligence.
 
 
 ## Measured comparison and attribution
@@ -138,3 +138,11 @@ The interactive viewer includes all three measured model runs, including failure
 Run `python -m decisionlab.stress` to reproduce **600/600 passing engine checks**: 100 generated business datasets, each tested unmodified and with five data corruptions. Cohort sizes, retention rates, values, support costs and row order vary. An independent Python/Decimal arithmetic oracle checks retention deltas and scenario economics; invalid panels must fail closed. CI regenerates and compares the committed report on Python 3.11–3.13.
 
 This is deterministic engine testing, not 600 model evaluations, not independent external validation, and not proof of generalization. Initial exploration found six datasets with floating-point cent discrepancies between calculation orders (seeds 1001, 1015, 1032, 1062, 1068, 1080). Currency calculations now use Decimal with explicit ROUND_HALF_UP. A regression asserts that 1057.725 becomes 1057.73. Earlier recorded model traces still replay successfully.
+
+### Decision relevance, not just positive arithmetic
+A retention-recovery pilot now requires a cited comparison showing an observed decline in the selected cohort, as well as positive conditional economics and valid data. Stable or improving cohorts can still be explored with the scenario tool, but cannot be presented as recovery recommendations. This is a workflow-specific policy, not a claim that businesses should never experiment on improving cohorts. Observed decline is not statistical significance or a causal estimate.
+
+The generated stress suite independently checks pilot eligibility for both segments of every valid generated dataset. Explicit regressions cover improving, stable, declining and negative-economics cases. All earlier measured model traces still replay. No new model inference is claimed for this runtime change; rerun a frozen model evaluation before claiming changed model performance.
+
+### Reviewer decision brief
+Read [the generated decision brief](docs/DECISION_BRIEF.md) for the Data, Business and Product work sample: validated descriptive metrics, 12 economic scenarios, break-even sensitivity, an experiment specification, measurement contract and acceptance criteria. CI regenerates the brief directly from the analytics engine.

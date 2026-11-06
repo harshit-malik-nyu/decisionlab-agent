@@ -1,6 +1,12 @@
 {
   "scope": "Generated deterministic engine stress checks, not LLM evaluation or independently authored held-out tasks.",
   "generator": "Python random.Random; seeds 1000 onward; varied cohort sizes, retention rates, values, support costs and row order",
+  "checks": [
+    "data validity",
+    "retention arithmetic",
+    "decimal economics",
+    "recovery pilot eligibility"
+  ],
   "passed": 600,
   "total": 600,
   "results": [
