@@ -1,0 +1,35 @@
+name: Measured local-model smoke test
+on:
+  push:
+    paths:
+      - '.github/workflows/model-smoke.yml'
+      - 'scripts/model_smoke.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  inference:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate engine first
+        run: python -m unittest discover -s tests -v
+      - name: Install isolated CPU inference runtime
+        run: |
+          mkdir -p "$RUNNER_TEMP/decisionlab-ollama"
+          curl --fail --location --retry 2 --max-time 240 https://github.com/ollama/ollama/releases/download/v0.40.14/ollama-linux-amd64.tar.zst -o "$RUNNER_TEMP/decisionlab-ollama/runtime.tar.zst"
+          tar --zstd -xf "$RUNNER_TEMP/decisionlab-ollama/runtime.tar.zst" -C "$RUNNER_TEMP/decisionlab-ollama" --exclude='lib/ollama/cuda*' --exclude='lib/ollama/vulkan*' --exclude='lib/ollama/rocm*'
+      - name: Measure real model on authored cases
+        run: python scripts/model_smoke.py "$RUNNER_TEMP/decisionlab-ollama"
+      - name: Preserve completed cases even on failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: measured-model-evidence
+          path: evaluation/
+          retention-days: 30
+          if-no-files-found: warn

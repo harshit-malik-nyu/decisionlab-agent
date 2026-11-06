@@ -4,7 +4,7 @@
 
 DecisionLab explores a practical question: can a tool-using agent turn a retention anomaly into a defensible experiment proposal, while refusing to act on incomplete evidence?
 
-**Status: research prototype, v0.1.** The local-model action loop is implemented. Automated tests exercise it with test doubles. No real-model evaluation has been completed in the build environment: its local inference endpoint is unavailable. The included replay and scores are **deterministic rule-policy runs**, not AI-generated runs. There is no claim of state-of-the-art performance or demonstrated employer demand.
+**Status: research prototype, v0.3.** The local-model action loop is implemented. Automated tests exercise it with test doubles. No real-model evaluation has been completed in the build environment: its local inference endpoint is unavailable. The included replay and scores are **deterministic rule-policy runs**, not AI-generated runs. There is no claim of state-of-the-art performance or demonstrated employer demand.
 
 ## Review in five minutes
 
