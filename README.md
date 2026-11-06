@@ -114,7 +114,7 @@ The verifier regenerates the synthetic dataset and re-executes tool calls, check
 
 The evaluator writes an atomic checkpoint after each completed or failed case. Repeating the command resumes remaining cases only when the model tag, Python version, source hashes, prompt hash, cases and budgets match. Completed traces are replay-validated before resume. Failed cases remain visible and are not silently retried; use a new report for a new trial. An unfinished in-flight case can be lost, and a checkpoint must still be backed up outside an ephemeral workspace. A model tag can change upstream and is not an immutable model digest.
 
-The suite now contains **33 tests**. Model-adapter and interruption tests use explicit test doubles; they are not measurements of model intelligence.
+The suite now contains **40 tests**. Model-adapter and interruption tests use explicit test doubles; they are not measurements of model intelligence.
 
 
 ## Measured comparison and attribution
@@ -130,3 +130,6 @@ The suite now contains **33 tests**. Model-adapter and interruption tests use ex
 The model did not call the document tool in the recorded injection fixture. Passing that case therefore **does not demonstrate prompt-injection resistance**. No intervention was deployed, no customer benefit was measured, and a 6/6 development result is not a universal 10/10 rating. The fixed/adaptive rules are inexpensive and sufficient for these known templates; the model has not demonstrated superiority over adaptive rules.
 
 Reproduce measured runs through `.github/workflows/model-smoke.yml`. Downloadable CI artifacts are retained for 30 days; the evidence JSON files committed here are the durable record. Model identity includes the downloaded digest, not just a tag.
+
+### Publication integrity
+The interactive viewer includes all three measured model runs, including failures. These are historical development runs, not a controlled ablation: code and prompts evolved. Publication re-executes every saved trace and rejects incomplete case coverage, duplicate cases, changed case identities, stale grades and inflated aggregate scores.

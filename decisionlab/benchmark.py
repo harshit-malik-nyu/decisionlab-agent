@@ -21,14 +21,45 @@ def build(output='site/runs.json'):
         for case in CASES:
             run=run_baseline(case, adaptive=adaptive)
             runs.append({'case':case, **run, 'grade':grade(run,ORACLE[case])})
-    evidence_path = Path(__file__).resolve().parents[1]/'evaluation/published-evidence.json'
-    measured = json.loads(evidence_path.read_text()) if evidence_path.exists() else None
-    if measured:
+    evaluations=[]
+    evidence_root=Path(__file__).resolve().parents[1]/'evaluation'
+    for filename in ('qwen2.5-1.5b-evidence.json','qwen2.5-3b-evidence.json','qwen2.5-3b-guarded-evidence.json'):
+        path=evidence_root/filename
+        if not path.exists():
+            raise ValueError('Missing published evaluation: '+filename)
+        measured=json.loads(path.read_text())
+        validate_evaluation(measured)
+        group=filename.removesuffix('-evidence.json')
+        evaluations.append({'id':group,'environment':measured['environment'],'protocol':measured['report']['protocol']})
         for entry in measured['report']['results']:
-            if 'run' in entry:
-                runs.append({'case':entry['case'], **entry['run'], 'grade':grade(entry['run'],ORACLE[entry['case']])})
-    result={'notice':'Synthetic authored cases. Rule policies and measured inference are distinct controllers. No held-out generalization claim.',
-            'runs':runs, 'model_evaluation':measured['environment'] if measured else {'status':'not_run'}}
+            run=entry['run']
+            runs.append({**run,'evaluation_id':group,'elapsed_seconds':entry['elapsed_seconds'],
+                         'grade':grade(run,ORACLE[entry['case']])})
+    result={'notice':'Synthetic authored cases. Historical development runs, not a controlled ablation or held-out benchmark.',
+            'runs':runs,'evaluations':evaluations}
     Path(output).parent.mkdir(parents=True,exist_ok=True)
     Path(output).write_text(json.dumps(result,indent=2)+'\n')
     return result
+
+
+def validate_evaluation(evidence):
+    """Fail publication on missing cases, stale scores or unreplayable evidence."""
+    from .verify import verify
+    report=evidence['report']
+    entries=report['results']
+    cases=[e['case'] for e in entries]
+    if report.get('complete') is not True or len(cases)!=len(CASES) or set(cases)!=set(CASES):
+        raise ValueError('Evaluation must contain each required case exactly once')
+    correct=0
+    for entry in entries:
+        run=entry['run']
+        if entry.get('status')!='completed' or run['case']!=entry['case']:
+            raise ValueError('Case identity or completion mismatch')
+        if not verify(run)['valid']:
+            raise ValueError('Trace failed re-execution')
+        actual=grade(run,ORACLE[entry['case']])
+        if actual!=entry['grade']:
+            raise ValueError('Stored grade differs from recomputed grade')
+        correct+=actual['correct']
+    if report['correct']!=correct:
+        raise ValueError('Aggregate score mismatch')
