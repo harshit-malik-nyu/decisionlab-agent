@@ -93,3 +93,11 @@ This release does not include multi-agent superiority claims, autonomous product
 - `.github/workflows/tests.yml`: tests and replay reproducibility checks
 
 MIT license. Synthetic data and documentation are included under the same license.
+
+## Validation hardening
+
+The current release validates complete before/after account panels, stable segment membership, binary outcomes, finite positive monthly values, nonnegative support costs and exact schemas. Tool calls reject unexpected arguments. Returned observations and exported traces are isolated copies, so consumers cannot modify the recorded evidence. A pilot cites exactly one scenario and its comparison.
+
+The evaluator requires a hold decision to cite invalid quality/comparison evidence. Exhausting the step budget receives no correctness credit. Segment scoring uses the scenario actually cited in the final decision, not the last scenario explored. These checks are covered by 24 automated tests, including five distinct malformed-panel subcases.
+
+Exploratory local-model runs were attempted during development, but their temporary artifacts were lost after a session interruption. They are not included as reproducible performance evidence. The public replay continues to show explicitly labeled rule policies.

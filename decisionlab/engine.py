@@ -3,6 +3,7 @@ import json
 import math
 import sqlite3
 import time
+import copy
 from .data import dataset
 
 TOOLS = {
@@ -28,12 +29,27 @@ class Investigation:
         self.started = time.monotonic()
 
     def _quality(self):
+        expected = ['account_id','segment','period','retained','monthly_value','support_cost']
         cols = [r[1] for r in self.db.execute('PRAGMA table_info(observations)')]
-        if 'retained' not in cols:
-            return {'valid': False, 'reason': 'schema_drift'}
-        duplicates = self.db.execute('SELECT COUNT(*) FROM (SELECT account_id,period FROM observations GROUP BY account_id,period HAVING COUNT(*)>1)').fetchone()[0]
-        missing = self.db.execute('SELECT COUNT(*) FROM observations WHERE retained IS NULL').fetchone()[0]
-        return {'valid': not (duplicates or missing), 'duplicate_keys': duplicates, 'missing_outcomes': missing}
+        if cols != expected:
+            return {'valid':False,'reason':'schema_drift'}
+        rows = self.db.execute('SELECT * FROM observations').fetchall()
+        keys, accounts = set(), {}
+        duplicates = missing = invalid = 0
+        for account,segment,period,retained,value,support in rows:
+            duplicates += (account,period) in keys
+            keys.add((account,period))
+            missing += retained is None
+            invalid += (type(account) is not int or segment not in ('small','large') or period not in ('before','after')
+                        or (retained is not None and (type(retained) is not int or retained not in (0,1)))
+                        or any(type(x) not in (int,float) or not math.isfinite(x) or x<0 for x in (value,support)) or value==0)
+            accounts.setdefault(account,[]).append((segment,period))
+        incomplete = sum({p for _,p in v}!={'before','after'} for v in accounts.values())
+        changes = sum(len({s for s,_ in v})!=1 for v in accounts.values())
+        empty = not rows or {r[1] for r in rows}!={'small','large'}
+        return {'valid':not(duplicates or missing or invalid or incomplete or changes or empty),
+                'duplicate_keys':duplicates,'missing_outcomes':missing,'invalid_rows':invalid,
+                'incomplete_accounts':incomplete,'segment_changes':changes,'empty_or_missing_segment':empty}
 
     def _sql(self, query):
         if not isinstance(query, str) or len(query) > 4000:
@@ -93,7 +109,7 @@ class Investigation:
                 'depends_on': ref, 'causal_effect_established': False, 'meaning': 'Conditional scenario; pilot only, not rollout approval.'}
 
     def step(self, tool, args=None):
-        args = {} if args is None else args
+        args = {} if args is None else copy.deepcopy(args)
         if self.done:
             raise ValueError('Investigation already closed')
         if len(self.trace) >= self.max_steps:
@@ -102,6 +118,9 @@ class Investigation:
         try:
             if not isinstance(args, dict):
                 raise ValueError('Arguments must be an object')
+            contracts = {'schema':set(),'document':set(),'quality':set(),'compare':set(),'sql':{'query'},'scenario':{'segment','lift','cost'},'finish':{'decision','evidence_ids'}}
+            if not isinstance(tool,str) or tool not in contracts or set(args)!=contracts[tool]:
+                raise ValueError('Unknown tool or unexpected/missing arguments')
             if tool == 'schema':
                 result = {'observations': [r[1] for r in self.db.execute('PRAGMA table_info(observations)')]}
             elif tool == 'document':
@@ -121,12 +140,12 @@ class Investigation:
                     raise ValueError('Invalid decision or evidence reference')
                 if decision == 'pilot':
                     scenarios = [self.evidence[r]['result'] for r in refs if self.evidence[r]['tool']=='scenario']
-                    if not scenarios or any(s['depends_on'] not in refs for s in scenarios):
+                    if len(scenarios)!=1 or any(s['depends_on'] not in refs for s in scenarios):
                         raise ValueError('Cite scenario and its comparison')
                     if not self._quality()['valid'] or any(s['net_scenario'] <= 0 for s in scenarios):
                         raise ValueError('Pilot fails evidence/economic gate')
                 result = {'decision': decision, 'evidence_ids': refs, 'scope': 'Human-reviewed experiment proposal only', 'causal_claim': False}
-                self.decision, self.done = result, True
+                self.decision, self.done = copy.deepcopy(result), True
             else:
                 raise ValueError('Unknown tool')
             eid = 'e'+str(len(self.trace)+1)
@@ -136,11 +155,11 @@ class Investigation:
         except (ValueError, KeyError, TypeError, sqlite3.Error, OverflowError) as error:
             record = {'tool':tool, 'args':args, 'error':str(error)}
         self.trace.append(record)
-        return record
+        return copy.deepcopy(record)
 
     def export(self):
-        return {'schema_version':1, 'data_sha256':self.data_hash, 'trace':self.trace, 'decision':self.decision,
-                'steps':len(self.trace), 'complete':self.done}
+        return copy.deepcopy({'schema_version':1, 'data_sha256':self.data_hash, 'trace':self.trace, 'decision':self.decision,
+                'steps':len(self.trace), 'complete':self.done})
 
     def close(self):
         self.db.close()

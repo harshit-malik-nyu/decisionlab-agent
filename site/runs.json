@@ -40,10 +40,14 @@
           "result": {
             "valid": true,
             "duplicate_keys": 0,
-            "missing_outcomes": 0
+            "missing_outcomes": 0,
+            "invalid_rows": 0,
+            "incomplete_accounts": 0,
+            "segment_changes": 0,
+            "empty_or_missing_segment": false
           },
           "data_sha256": "05cbfe197d739de9df69cba4cf03927ef1e90e936aa865bb378eca681bd4fa14",
-          "sha256": "60e4e3a4892c02681065f931f062e740f8d507c576d88c79b3b88e1e4f6f3b07"
+          "sha256": "81f07b17798d1c074e52d5adfda774630bb1a64c30dd62cc3ab4370963895a1c"
         },
         {
           "id": "e4",
@@ -193,10 +197,14 @@
           "result": {
             "valid": false,
             "duplicate_keys": 12,
-            "missing_outcomes": 0
+            "missing_outcomes": 0,
+            "invalid_rows": 0,
+            "incomplete_accounts": 0,
+            "segment_changes": 0,
+            "empty_or_missing_segment": false
           },
           "data_sha256": "8bb6a7dd1c6162f105817a19a7b2d9b80df1682c44fccec073d5566193785084",
-          "sha256": "5dd571e4a86a0d52f8b1e991bd6be284052ae5f9c11c02fc74409a6f8662d500"
+          "sha256": "e79d1b7779f79a8f98b427961d9efc0d2558775e4fde384fc456814e10557933"
         },
         {
           "id": "e4",
@@ -275,10 +283,14 @@
           "result": {
             "valid": false,
             "duplicate_keys": 0,
-            "missing_outcomes": 27
+            "missing_outcomes": 27,
+            "invalid_rows": 0,
+            "incomplete_accounts": 0,
+            "segment_changes": 0,
+            "empty_or_missing_segment": false
           },
           "data_sha256": "78a256ad37d774b234dd40f097711f76aa45a0522d51f0a3dde4a91d37593e84",
-          "sha256": "190c65202dc54b52a1b707dee94a8ad61b3e13b7332e369a0576d9fd28a57b72"
+          "sha256": "233dddbccba2cd96d4032c42f6672aa589dc9462cfd9370ac66ad50da364434d"
         },
         {
           "id": "e4",
@@ -357,10 +369,14 @@
           "result": {
             "valid": true,
             "duplicate_keys": 0,
-            "missing_outcomes": 0
+            "missing_outcomes": 0,
+            "invalid_rows": 0,
+            "incomplete_accounts": 0,
+            "segment_changes": 0,
+            "empty_or_missing_segment": false
           },
           "data_sha256": "c88812d27f0e8b8bbad479f4d2a93d79ca0c737fab2c9e728f0b325861e79ac8",
-          "sha256": "426614a06bd4833c32899336b35e04f6163fa6dc29d184f69dff674d17eb8934"
+          "sha256": "db8defeb6db69761237d1a8341dfc6c835d52c17c37f2c0e7b79abe5cb76665e"
         },
         {
           "id": "e4",
@@ -510,10 +526,14 @@
           "result": {
             "valid": true,
             "duplicate_keys": 0,
-            "missing_outcomes": 0
+            "missing_outcomes": 0,
+            "invalid_rows": 0,
+            "incomplete_accounts": 0,
+            "segment_changes": 0,
+            "empty_or_missing_segment": false
           },
           "data_sha256": "05cbfe197d739de9df69cba4cf03927ef1e90e936aa865bb378eca681bd4fa14",
-          "sha256": "60e4e3a4892c02681065f931f062e740f8d507c576d88c79b3b88e1e4f6f3b07"
+          "sha256": "81f07b17798d1c074e52d5adfda774630bb1a64c30dd62cc3ab4370963895a1c"
         },
         {
           "id": "e4",
@@ -744,10 +764,14 @@
           "result": {
             "valid": true,
             "duplicate_keys": 0,
-            "missing_outcomes": 0
+            "missing_outcomes": 0,
+            "invalid_rows": 0,
+            "incomplete_accounts": 0,
+            "segment_changes": 0,
+            "empty_or_missing_segment": false
           },
           "data_sha256": "05cbfe197d739de9df69cba4cf03927ef1e90e936aa865bb378eca681bd4fa14",
-          "sha256": "60e4e3a4892c02681065f931f062e740f8d507c576d88c79b3b88e1e4f6f3b07"
+          "sha256": "81f07b17798d1c074e52d5adfda774630bb1a64c30dd62cc3ab4370963895a1c"
         },
         {
           "id": "e4",
@@ -897,10 +921,14 @@
           "result": {
             "valid": false,
             "duplicate_keys": 12,
-            "missing_outcomes": 0
+            "missing_outcomes": 0,
+            "invalid_rows": 0,
+            "incomplete_accounts": 0,
+            "segment_changes": 0,
+            "empty_or_missing_segment": false
           },
           "data_sha256": "8bb6a7dd1c6162f105817a19a7b2d9b80df1682c44fccec073d5566193785084",
-          "sha256": "5dd571e4a86a0d52f8b1e991bd6be284052ae5f9c11c02fc74409a6f8662d500"
+          "sha256": "e79d1b7779f79a8f98b427961d9efc0d2558775e4fde384fc456814e10557933"
         },
         {
           "id": "e4",
@@ -979,10 +1007,14 @@
           "result": {
             "valid": false,
             "duplicate_keys": 0,
-            "missing_outcomes": 27
+            "missing_outcomes": 27,
+            "invalid_rows": 0,
+            "incomplete_accounts": 0,
+            "segment_changes": 0,
+            "empty_or_missing_segment": false
           },
           "data_sha256": "78a256ad37d774b234dd40f097711f76aa45a0522d51f0a3dde4a91d37593e84",
-          "sha256": "190c65202dc54b52a1b707dee94a8ad61b3e13b7332e369a0576d9fd28a57b72"
+          "sha256": "233dddbccba2cd96d4032c42f6672aa589dc9462cfd9370ac66ad50da364434d"
         },
         {
           "id": "e4",
@@ -1061,10 +1093,14 @@
           "result": {
             "valid": true,
             "duplicate_keys": 0,
-            "missing_outcomes": 0
+            "missing_outcomes": 0,
+            "invalid_rows": 0,
+            "incomplete_accounts": 0,
+            "segment_changes": 0,
+            "empty_or_missing_segment": false
           },
           "data_sha256": "c88812d27f0e8b8bbad479f4d2a93d79ca0c737fab2c9e728f0b325861e79ac8",
-          "sha256": "426614a06bd4833c32899336b35e04f6163fa6dc29d184f69dff674d17eb8934"
+          "sha256": "db8defeb6db69761237d1a8341dfc6c835d52c17c37f2c0e7b79abe5cb76665e"
         },
         {
           "id": "e4",
@@ -1214,10 +1250,14 @@
           "result": {
             "valid": true,
             "duplicate_keys": 0,
-            "missing_outcomes": 0
+            "missing_outcomes": 0,
+            "invalid_rows": 0,
+            "incomplete_accounts": 0,
+            "segment_changes": 0,
+            "empty_or_missing_segment": false
           },
           "data_sha256": "05cbfe197d739de9df69cba4cf03927ef1e90e936aa865bb378eca681bd4fa14",
-          "sha256": "60e4e3a4892c02681065f931f062e740f8d507c576d88c79b3b88e1e4f6f3b07"
+          "sha256": "81f07b17798d1c074e52d5adfda774630bb1a64c30dd62cc3ab4370963895a1c"
         },
         {
           "id": "e4",

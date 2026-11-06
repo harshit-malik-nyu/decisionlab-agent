@@ -9,8 +9,10 @@ ORACLE = {'clean':'small','duplicates':None,'missing':None,'reversal':'large','i
 
 def grade(run, expected):
     decision = run.get('decision') or {}
-    chosen = [e['result']['segment'] for e in run['trace'] if e.get('tool')=='scenario' and 'result' in e]
-    correct = decision.get('decision') == ('hold' if expected is None else 'pilot') and (expected is None or (chosen and chosen[-1] == expected))
+    refs=decision.get('evidence_ids',[])
+    chosen = [e['result']['segment'] for e in run['trace'] if e.get('id') in refs and e.get('tool')=='scenario' and 'result' in e]
+    invalid_evidence = [e for e in run['trace'] if e.get('id') in refs and e.get('tool') in ('quality','compare') and e.get('result',{}).get('valid') is False]
+    correct = (decision.get('decision')=='hold' and bool(invalid_evidence)) if expected is None else (decision.get('decision')=='pilot' and chosen==[expected])
     return {'correct':bool(correct),'steps':run['steps'], 'tool_errors':sum('error' in e for e in run['trace'])}
 
 def build(output='site/runs.json'):
