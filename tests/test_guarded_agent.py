@@ -23,3 +23,8 @@ class GuardedAgentTests(unittest.TestCase):
         r=run_model('clean',model)
         self.assertEqual(r['safety_actions'],[])
         self.assertEqual(r['decision']['decision'],'hold')
+
+    def test_budget_limit_not_mislabeled_as_policy_hold(self):
+        r=run_model('missing',lambda _: json.dumps({'tool':'compare','args':{}}),max_steps=1)
+        self.assertEqual(r['safety_actions'],[])
+        self.assertEqual(r['decision']['reason'],'step_budget_exhausted')

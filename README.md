@@ -4,7 +4,7 @@
 
 DecisionLab explores a practical question: can a tool-using agent turn a retention anomaly into a defensible experiment proposal, while refusing to act on incomplete evidence?
 
-**Status: research prototype, v0.3.** Real local-model inference has now been measured on six authored development cases. Qwen2.5 1.5B scored **0/6** on evidence-backed decision correctness. This is a negative result, preserved in `evaluation/qwen2.5-1.5b-evidence.json`, with model digest, runtime, source commit, prompt and source hashes, tool traces, timings and token counts. It demonstrates that safe execution gates do not by themselves establish useful agent reasoning. Rule-policy scores are separate and are not AI performance. No state-of-the-art or hiring-demand claim is made.
+**Status: research prototype, v0.3, with preserved real-model evaluations.** On six authored development cases, Qwen2.5 1.5B scored 0/6, Qwen2.5 3B scored 3/6, and the 3B model plus an explicit invalid-data stopping policy scored 6/6. The final result comprises **three model-generated pilot proposals and three deterministic runtime holds**. These are single-run development results, not independent generalization or state-of-the-art evidence. All traces, model digests, source commits, prompt/source hashes, timings and token counts are in `evaluation/`.
 
 ## Review in five minutes
 
@@ -79,7 +79,7 @@ Six authored regression scenarios: clean data, duplicate keys, missing outcomes,
 
 See `site/runs.json` for exact measured outputs and `docs/RESEARCH_CARD.md` for the protocol. These cases were written with the implementation and are **not held-out generalization evidence**. Passing a rule policy through an injection case does not establish that a language model resists prompt injection.
 
-This release does not include multi-agent superiority claims, autonomous production writes, real customer data, an independent benchmark, or a deployed live model. Independent model trials and unseen task families remain necessary before a research-quality performance claim.
+This release does not include multi-agent superiority claims, autonomous production writes, real customer data, an independent benchmark, or a public live-inference endpoint. Independent model trials and unseen task families remain necessary before a research-quality performance claim.
 
 ## Repository map
 
@@ -98,9 +98,9 @@ MIT license. Synthetic data and documentation are included under the same licens
 
 The current release validates complete before/after account panels, stable segment membership, binary outcomes, finite positive monthly values, nonnegative support costs and exact schemas. Tool calls reject unexpected arguments. Returned observations and exported traces are isolated copies, so consumers cannot modify the recorded evidence. A pilot cites exactly one scenario and its comparison.
 
-The evaluator requires a hold decision to cite invalid quality/comparison evidence. Exhausting the step budget receives no correctness credit. Segment scoring uses the scenario actually cited in the final decision, not the last scenario explored. These checks are covered by 24 automated tests, including five distinct malformed-panel subcases.
+The evaluator requires a hold decision to cite invalid quality/comparison evidence. Exhausting the step budget receives no correctness credit. Segment scoring uses the scenario actually cited in the final decision, not the last scenario explored. These checks are covered by the automated suite, including five distinct malformed-panel subcases.
 
-Exploratory local-model runs were attempted during development, but their temporary artifacts were lost after a session interruption. They are not included as reproducible performance evidence. The public replay continues to show explicitly labeled rule policies.
+Early temporary runs were lost during a session interruption and are excluded from evidence. Subsequent GitHub Actions runs were preserved in this repository and replay-verified.
 
 ## Re-execute evidence and checkpoint model evaluations
 
@@ -114,4 +114,19 @@ The verifier regenerates the synthetic dataset and re-executes tool calls, check
 
 The evaluator writes an atomic checkpoint after each completed or failed case. Repeating the command resumes remaining cases only when the model tag, Python version, source hashes, prompt hash, cases and budgets match. Completed traces are replay-validated before resume. Failed cases remain visible and are not silently retried; use a new report for a new trial. An unfinished in-flight case can be lost, and a checkpoint must still be backed up outside an ephemeral workspace. A model tag can change upstream and is not an immutable model digest.
 
-The suite now contains **30 tests**. Model-adapter and interruption tests use explicit test doubles; they are not measurements of model intelligence.
+The suite now contains **33 tests**. Model-adapter and interruption tests use explicit test doubles; they are not measurements of model intelligence.
+
+
+## Measured comparison and attribution
+
+| Controller | Correct authored cases | What it establishes |
+|---|---:|---|
+| Fixed rules | 5/6 | A simple policy misses the revised segment |
+| Adaptive rules | 6/6 | A deterministic reference policy handles these templates |
+| Qwen2.5 1.5B | 0/6 | Small-model failures are preserved |
+| Qwen2.5 3B | 3/6 | Valid-data proposals succeeded; invalid-data loops remained |
+| Qwen2.5 3B + runtime quality gate | 6/6 | Three model proposals + three automatic, evidence-backed holds |
+
+The model did not call the document tool in the recorded injection fixture. Passing that case therefore **does not demonstrate prompt-injection resistance**. No intervention was deployed, no customer benefit was measured, and a 6/6 development result is not a universal 10/10 rating. The fixed/adaptive rules are inexpensive and sufficient for these known templates; the model has not demonstrated superiority over adaptive rules.
+
+Reproduce measured runs through `.github/workflows/model-smoke.yml`. Downloadable CI artifacts are retained for 30 days; the evidence JSON files committed here are the durable record. Model identity includes the downloaded digest, not just a tag.

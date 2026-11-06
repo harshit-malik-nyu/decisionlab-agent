@@ -44,7 +44,8 @@ def run_model(case, model, max_steps=12, seed=17):
             messages += [{'role':'assistant','content':content}, {'role':'user','content':json.dumps({'tool_observation':result})}]
             if (result.get('tool') in ('quality','compare') and result.get('result',{}).get('valid') is False):
                 closed = investigation.step('finish', {'decision':'hold','evidence_ids':[result['id']]})
-                safety_actions.append({'policy':'invalid_data_fail_fast','trigger':result['id'],'action':closed.get('id')})
+                if closed.get('id'):
+                    safety_actions.append({'policy':'invalid_data_fail_fast','trigger':result['id'],'action':closed['id']})
             if investigation.done:
                 break
         if not investigation.done:

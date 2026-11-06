@@ -1,48 +1,40 @@
-# Research card — v0.1
+# Research card — v0.3
 
-## Claim boundary
+DecisionLab studies auditable business investigations using bounded tools, explicit assumptions, re-executable evidence and deterministic data-quality stopping rules. It is a research prototype, not a novel algorithm or independent benchmark result.
 
-This is an auditable investigation **prototype**, not a published novel agent algorithm. The useful hypothesis is that typed evidence gates can reduce unsupported business decisions at the cost of greater abstention. This release demonstrates the gates and supplies a testable harness; it has not established that hypothesis statistically for real models.
+## Preserved measurements
 
-## Measured configuration
+Six authored development cases, one observed run per model configuration, seed 17, maximum 12 tool actions, Ollama CPU inference, temperature 0. Exact runtime/model digests, code commits, prompt/source hashes, token counts and per-case latency are committed in `evaluation/`.
 
-- Standard-library Python, SQLite in-memory data.
-- 120 synthetic accounts, two observations each before perturbation.
-- Six authored scenario families, seed 17. Seed permutes identifiers only; different seeds are **not independent business problems**.
-- Fixed rules vs adaptive rules; same tools and gate policy.
-- Correctness: hold for invalid data, otherwise propose a pilot for the oracle's largest-decline segment.
-- Additional recorded metrics: calls and tool errors.
-- Fixture authors know the oracle. This is regression testing, not blind testing.
+| Configuration | Correct cases |
+|---|---:|
+| Qwen2.5 1.5B | 0/6 |
+| Qwen2.5 3B | 3/6 |
+| Qwen2.5 3B with invalid-data stopping policy | 6/6 |
 
-## Expected and actual results
+The guarded result contains three model-origin pilot proposals and three runtime-origin holds. The stopping policy examines tool-returned data validation, not evaluator labels. Model inference selects tools and assumptions for valid investigations; the runtime owns permissions, validation and invalid-data termination. Budget exhaustion earns no correctness credit.
 
-The generated replay contains the actual outcomes. Fixed rules should pass five of six cases and adaptive rules six of six. This narrow distinction only tests segment adaptation. A six-case result cannot be represented as a real-world success rate or confidence bound on generalization.
+The evaluator judges the largest-decline segment and evidence-backed holds under this task's defined objective. It does not establish that this is the globally optimal business investment. Scenario lift, contribution margin and persistence are assumptions, not causal estimates. A pilot proposal is not automatic spending authorization.
 
-No real-model accuracy, token usage, latency comparison, injection-resistance rate or cost reduction has been measured. A local endpoint connection attempt failed in the build environment. Mock-model tests establish orchestration behavior only.
+## Important negative evidence
 
-## Next experiment required before stronger claims
+The small model failed all six tasks. The unguarded larger model looped on invalid data. All failures are retained. The adaptive rules reference already achieves 6/6, so these results do not show the model outperforms a deterministic policy. Temperature zero does not guarantee bitwise repeatability across runtimes or hardware.
 
-1. Freeze this implementation and prompt by commit hash.
-2. Have a separate evaluator author new schemas, metric definitions and causal-confounding tasks; keep labels outside agent context.
-3. Compare a strong deterministic workflow, one model with tools, and the same model with evidence gates disabled in a disposable evaluation harness.
-4. Use matched task instances and fixed tool budgets. Report all failures and abstentions, not only successful traces.
-5. Record model digest, runtime version, hardware, prompt, dataset hashes, per-call latency, prompt/output tokens and random seeds.
-6. Evaluate numeric correctness, decision correctness, citation entailment, appropriate abstention, harmful-action attempts and prompt-injection success separately.
-7. Report paired differences with uncertainty over independent task instances. Repeated runs of one template do not create independent evidence.
-8. Test memory or specialist agents only after the single-agent baseline is stable. More agents are not evidence of better reasoning.
+The model did not retrieve the malicious document in the injection case. That run tests behavior with the document present but unexposed; it provides no evidence of resistance after exposure. Revised evidence is a fresh investigation with a changed dataset hash, not durable-memory invalidation.
 
-## Failure modes left open
+## What remains unproven
 
-- A model can choose an economically positive but weakly justified lift assumption.
-- Evidence gates certify arithmetic and prerequisites, not the truth of the assumed effect.
-- A model can waste its budget, abstain unnecessarily or select a suboptimal segment.
-- The schema-drift case fails closed instead of repairing arbitrary schemas.
-- Revised evidence is evaluated as a fresh run with a new data hash; this release does not implement mid-run state migration or durable memory invalidation.
-- SQL is constrained but this is not a complete hostile-code sandbox.
-- Synthetic data cannot demonstrate external business impact or hiring demand.
+- Unseen schema and domain generalization.
+- Prompt-injection resistance after actual document exposure.
+- Independent evaluation, repeated trials and statistical precision.
+- Real causal effects, business impact or employer demand.
+- Superiority over strong workflows or other agent architectures.
+- Safe ingestion of arbitrary external datasets and production deployment.
 
-## Research context
+## Next research protocol
 
-- Anthropic, [Building effective agents](https://www.anthropic.com/research/building-effective-agents): distinguishes workflows from agents and motivates simple evaluated architectures.
-- [DABstep](https://arxiv.org/abs/2506.23719): an example of the difficulty of evaluating realistic data-analysis agents. DecisionLab does not claim results on DABstep.
-- [Ollama chat API](https://docs.ollama.com/api/chat): interface used by the optional local model adapter.
+Freeze the source and prompt; introduce independently authored tasks with new schemas and metric ambiguity; keep oracle labels out of the agent's context; compare strong deterministic workflows against model-only and guarded-model conditions. Force and record document exposure for injection tests. Repeat matched tasks and publish all failures, token use, latency and uncertainty across independent task instances. Do not treat repeated seeds that only permute IDs as independent business problems.
+
+## Verification boundary
+
+`python -m decisionlab.verify trace.json` regenerates the synthetic fixture and re-executes recorded tools. It detects edited results even if hashes are recomputed. It trusts the installed code and fixture generator; hashes do not authenticate real-world sources. Early ephemeral experiments lost during an interruption are excluded from measured claims.
